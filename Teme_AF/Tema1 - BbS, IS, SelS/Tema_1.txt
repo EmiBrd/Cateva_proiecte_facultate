@@ -1,0 +1,318 @@
+#include <iostream>
+#include "Profiler.h"
+Profiler profiler("tema1");
+using namespace std;
+
+
+/**
+ * @author Bordeianu Emanuel
+ * @group 30225
+
+   Specificatiile problemei: Compararea metodele de sortare Bubble_sort, Selection_sort si Insertion_sort
+ 
+   caz favorabil: bubble O(n), selection O(n*n), insertion O(n);
+   caz mediu statistic: bubble O(n*n), selection O(n*n), insertion O(n*n);
+   caz defavorafil: bubble O(n*n), selection O(n*n), insertion O(n*n);
+ 
+ */
+
+
+void swap(int* a, int* b)
+{
+	int t = *a;
+	*a = *b;
+	*b = t;
+}
+
+
+void bubble(int a[], int n) {
+	Operation atribuiri = profiler.createOperation("Atribuiri buble", n);
+	Operation comparatii = profiler.createOperation("Comparatii buble", n);
+	bool foundd;
+
+	do {
+		foundd = false;
+		for (int j = 0; j < n - 1; j++) {
+			//profiler.countOperation("Comparatii buble", n);
+			comparatii.count();
+			if (a[j] > a[j + 1]) {
+				//int aux = a[j];
+				//a[j] = a[j + 1];
+				//a[j + 1] = aux;
+				swap(&a[j], &a[j + 1]);
+				atribuiri.count();
+				atribuiri.count();
+				atribuiri.count();
+				//profiler.countOperation("Atribuiri buble", n, 3);
+				foundd = true;
+			}
+		}
+	} while (foundd);
+
+}
+
+
+void bubblef(int a[], int n) {
+	Operation atribuirif = profiler.createOperation("Atribuiri buble F", n);
+	Operation comparatiif = profiler.createOperation("Comparatii buble F", n);
+	bool foundd;
+
+	do {
+		foundd = false;
+		for (int j = 0; j < n - 1; j++) {
+			atribuirif.count();
+			//profiler.countOperation("Comparatii buble F", n);
+			if (a[j] > a[j + 1]) {
+				//int aux = a[j];
+				//a[j] = a[j + 1];
+				//a[j + 1] = aux;
+				swap(&a[j], &a[j + 1]);
+				comparatiif.count();
+				comparatiif.count();
+				comparatiif.count();
+				//profiler.countOperation("Atribuiri buble F", n, 3);
+				foundd = true;
+			}
+		}
+	} while (foundd);
+
+}
+
+
+void bubbled(int a[], int n) {
+	Operation atribuirid = profiler.createOperation("Atribuiri buble D", n);
+	Operation comparatiid = profiler.createOperation("Comparatii buble D", n);
+	bool foundd;
+
+	do {
+		foundd = false;
+		for (int j = 0; j < n - 1; j++) {
+			atribuirid.count();
+			//profiler.countOperation("Comparatii buble D", n);
+			if (a[j] > a[j + 1]) {
+				//int aux = a[j];
+				//a[j] = a[j + 1];
+				//a[j + 1] = aux;
+				swap(&a[j], &a[j + 1]);
+				comparatiid.count();
+				comparatiid.count();
+				comparatiid.count();
+				//profiler.countOperation("Atribuiri buble D", n, 3);
+				foundd = true;
+			}
+		}
+	} while (foundd);
+
+}
+
+
+void insertion_sort(int v[], int n) {
+	int aux, j;    // facut la seminar
+	for (int i = 1; i < n; i++) {
+		aux = v[i];
+		profiler.countOperation("Atribuiri insertion", n, 1);
+		j = i - 1;
+
+		profiler.countOperation("Comparatii insertion", n);
+		while (j >= 0 && v[j] > aux) {
+			v[j + 1] = v[j];
+			profiler.countOperation("Atribuiri insertion", n, 1);
+			j = j - 1;
+			profiler.countOperation("Comparatii insertion", n);
+		}
+		v[j + 1] = aux;
+		profiler.countOperation("Atribuiri insertion", n, 1);
+	}
+}
+
+
+void insertion_sortf(int v[], int n) {
+	int aux, j;    // facut la seminar
+	for (int i = 1; i < n; i++) {
+		aux = v[i];
+		profiler.countOperation("Atribuiri insertion F", n, 1);
+		j = i - 1;
+
+		profiler.countOperation("Comparatii insertion F", n);
+		while (j >= 0 && v[j] > aux) {
+			v[j + 1] = v[j];
+			profiler.countOperation("Atribuiri insertion F", n, 1);
+			j = j - 1;
+			profiler.countOperation("Comparatii insertion F", n);
+		}
+		v[j + 1] = aux;
+		profiler.countOperation("Atribuiri insertion F", n, 1);
+	}
+}
+
+
+void insertion_sortd(int v[], int n) {
+	int aux, j;    // facut la seminar
+	for (int i = 1; i < n; i++) {
+		aux = v[i];
+		profiler.countOperation("Atribuiri insertion D", n, 1);
+		j = i - 1;
+
+		profiler.countOperation("Comparatii insertion D", n);
+		while (j >= 0 && v[j] > aux) {
+			v[j + 1] = v[j];
+			profiler.countOperation("Atribuiri insertion D", n, 1);
+			j = j - 1;
+			profiler.countOperation("Comparatii insertion D", n);
+		}
+		v[j + 1] = aux;
+		profiler.countOperation("Atribuiri insertion D", n, 1);
+	}
+}
+
+
+void selection_sort(int v[], int n) {
+	int minindex;
+
+	for (int i = 0; i < n - 1; i++) {
+		minindex = i;
+		for (int j = i + 1; j < n; j++) {
+			profiler.countOperation("Comparatii selection", n);
+			if (v[j] < v[minindex]) {
+				minindex = j;
+			}
+		}
+		swap(&v[minindex], &v[i]);
+		profiler.countOperation("Atribuiri selection", n, 3);
+	}
+}
+
+
+void selection_sortf(int v[], int n) {
+	int minindex;
+
+	for (int i = 0; i < n - 1; i++) {
+		minindex = i;
+		for (int j = i + 1; j < n; j++) {
+			profiler.countOperation("Comparatii selection F", n);
+			if (v[j] < v[minindex]) {
+				minindex = j;
+			}
+		}
+		swap(&v[minindex], &v[i]);
+		profiler.countOperation("Atribuiri selection F", n, 3);
+	}
+}
+
+
+void selection_sortd(int v[], int n) {
+	int minindex;
+
+	for (int i = 0; i < n - 1; i++) {
+		minindex = i;
+		for (int j = i + 1; j < n; j++) {
+			profiler.countOperation("Comparatii selection D", n);
+			if (v[j] < v[minindex]) {
+				minindex = j;
+			}
+		}
+		swap(&v[minindex], &v[i]);
+		profiler.countOperation("Atribuiri selection D", n, 3);
+	}
+}
+
+
+
+void fav(int* a, int* b, int* c, int n) {
+	for (int i = 100; i <= n; i = i + 100) {
+		for (int j = 0; j <= i; j++) {
+			a[j] = j;
+			b[j] = j;
+			c[j] = j;
+		}
+		bubblef(a, i);
+		selection_sortf(b, i);
+		insertion_sortf(c, i);
+	}
+}
+
+
+
+int main() {
+
+	//int n = 10000;
+
+	// cazul favorabil
+	int vbublef[10000];
+	int vselectf[10000];
+	int vinsertf[10000];
+
+	fav(vbublef, vselectf, vinsertf, 600);
+
+	/*
+	for (int i = 100; i <= n; i = i + 100) {
+		FillRandomArray(vbublef, i, 0, 50000, false, 1);
+		FillRandomArray(vselectf, i, 0, 50000, false, 1);
+		FillRandomArray(vinsertf, i, 0, 50000, false, 1);
+		bubblef(vbublef, i);
+		selection_sortf(vselectf, i);
+		insertion_sortf(vinsertf, i);
+	}
+	*/
+
+	profiler.createGroup("GR ATRIBUIRI F",  "Atribuiri buble F",     "Atribuiri selection F", "Atribuiri insertion F");
+	profiler.createGroup("GR COMPARATII F", "Comparatii buble F",    "Comparatii selection F","Comparatii insertion F");
+	profiler.addSeries("Tot op selection F","Comparatii selection F","Atribuiri selection F");
+	profiler.addSeries("Tot op insertion F","Comparatii insertion F","Atribuiri insertion F");
+	profiler.addSeries("Tot op buble F",    "Comparatii buble F",    "Atribuiri buble F");
+	profiler.createGroup("Total operatii F","Tot op selection F",    "Tot op insertion F",     "Tot op buble F");
+
+	// --------------------------------------------
+
+	// cazul mediu statistic
+	int vbuble[10000];
+	int vselect[10000];
+	int vinsert[10000];
+
+	for (int i = 100; i <= 600; i = i + 100) {
+		FillRandomArray(vselect, i);
+		FillRandomArray(vbuble, i);
+		FillRandomArray(vinsert, i);
+		selection_sort(vselect, i);
+		insertion_sort(vinsert, i);
+		bubble(vbuble, i);
+	}
+
+	profiler.createGroup("GR ATRIBUIRI",  "Atribuiri buble",     "Atribuiri selection", "Atribuiri insertion");
+	profiler.createGroup("GR COMPARATII", "Comparatii buble",    "Comparatii selection","Comparatii insertion");
+	profiler.addSeries("Tot op selection","Comparatii selection","Atribuiri selection");
+	profiler.addSeries("Tot op insertion","Comparatii insertion","Atribuiri insertion");
+	profiler.addSeries("Tot op buble",    "Comparatii buble",    "Atribuiri buble");
+	profiler.createGroup("Total operatii","Tot op selection",    "Tot op insertion",    "Tot op buble");
+
+	// --------------------------------
+
+	// cazul defavorabil
+
+
+	int vbubled[10000];
+	int vselectd[10000];
+	int vinsertd[10000];
+
+	for (int i = 100; i <= 600; i = i + 100) {
+		FillRandomArray(vbubled, i, 0, 50000, false, 2);
+		FillRandomArray(vselectd, i, 0, 50000, false, 2);
+		FillRandomArray(vinsertd, i, 0, 50000, false, 2);
+		bubbled(vbubled, i);
+		selection_sortd(vselectd, i);
+		insertion_sortd(vinsertd, i);
+	}
+	
+	profiler.createGroup("GR ATRIBUIRI D",  "Atribuiri buble D",     "Atribuiri selection D", "Atribuiri insertion D");
+	profiler.createGroup("GR COMPARATII D", "Comparatii buble D",    "Comparatii selection D","Comparatii insertion D");
+	profiler.addSeries("Tot op selection D","Comparatii selection D","Atribuiri selection D");
+	profiler.addSeries("Tot op insertion D","Comparatii insertion D","Atribuiri insertion D");
+	profiler.addSeries("Tot op buble D",    "Comparatii buble D",    "Atribuiri buble D");
+	profiler.createGroup("Total operatii D","Tot op selection D",    "Tot op insertion D",    "Tot op buble D");
+
+
+	profiler.showReport();
+
+
+	return 0;
+}
