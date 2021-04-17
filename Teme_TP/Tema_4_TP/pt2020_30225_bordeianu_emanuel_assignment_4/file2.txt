@@ -1,0 +1,1 @@
+ID_table = 1   Data = Tue May 12 16:11:07 EEST 2020    Menu_name = tort    menu_price = 40.0    Final_price = 40.0

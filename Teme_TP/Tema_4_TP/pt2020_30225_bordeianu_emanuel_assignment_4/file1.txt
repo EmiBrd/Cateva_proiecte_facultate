@@ -1,0 +1,1 @@
+ID_table = 1   Data = Tue May 12 16:09:54 EEST 2020    Menu_name = friptura    menu_price = 15.0    Final_price = 15.0

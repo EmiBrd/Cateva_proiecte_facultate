@@ -1,0 +1,14 @@
+2011-11-28 - Distinct day number => 1
+2011-11-29 - Distinct day number => 2
+2011-11-30 - Distinct day number => 3
+2011-12-01 - Distinct day number => 4
+2011-12-02 - Distinct day number => 5
+2011-12-03 - Distinct day number => 6
+2011-12-04 - Distinct day number => 7
+2011-12-05 - Distinct day number => 8
+2011-12-06 - Distinct day number => 9
+2011-12-07 - Distinct day number => 10
+2011-12-08 - Distinct day number => 11
+2011-12-09 - Distinct day number => 12
+2011-12-10 - Distinct day number => 13
+2011-12-11 - Distinct day number => 14

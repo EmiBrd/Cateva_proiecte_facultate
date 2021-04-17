@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="PT2020_30225_Bordeianu_Emanuel_Assignment_3:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e61bd403-d016-4c7a-ac16-98dbef41fd0e" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1aUsBbQBay1iQknosVH6gObFEe8" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\An2_sem2_exerc\TP\PT2020_30225_Bordeianu_Emanuel_Assignment_3\src\main\java" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\An2_sem2_exerc\TP\PT2020_30225_Bordeianu_Emanuel_Assignment_3\src\main\java" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.BLD">
+    <configuration name="BLD" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="start.Start" />
+      <module name="PT2020_30225_Bordeianu_Emanuel_Assignment_3" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="true" file="D:\An2_sem2_exerc\TP\PT2020_30225_Bordeianu_Emanuel_Assignment_3/pom.xml" goal="assembly:single" />
+      </method>
+    </configuration>
+    <configuration name="PT2020_T3" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="start.Start" />
+      <module name="PT2020_30225_Bordeianu_Emanuel_Assignment_3" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="assembly:single" />
+      </method>
+    </configuration>
+    <configuration name="Start" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="start.Start" />
+      <module name="PT2020_30225_Bordeianu_Emanuel_Assignment_3" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="start.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="inca_ceva" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="start.Start" />
+      <module name="PT2020_30225_Bordeianu_Emanuel_Assignment_3" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/.." />
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="assembly:single" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.BLD" />
+      <item itemvalue="Application.inca_ceva" />
+      <item itemvalue="Application.PT2020_T3" />
+      <item itemvalue="Application.Start" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.BLD" />
+        <item itemvalue="Application.PT2020_T3" />
+        <item itemvalue="Application.Start" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e61bd403-d016-4c7a-ac16-98dbef41fd0e" name="Default Changelist" comment="" />
+      <created>1586801371146</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1586801371146</updated>
+      <workItem from="1586801377532" duration="6384000" />
+      <workItem from="1586847118129" duration="10744000" />
+      <workItem from="1586867145643" duration="1727000" />
+      <workItem from="1586869313614" duration="667000" />
+      <workItem from="1586872246737" duration="3231000" />
+      <workItem from="1586880604099" duration="651000" />
+      <workItem from="1586881643499" duration="57000" />
+      <workItem from="1586882019709" duration="8733000" />
+      <workItem from="1586933982748" duration="15456000" />
+      <workItem from="1586952597037" duration="13166000" />
+      <workItem from="1586966857255" duration="5145000" />
+      <workItem from="1587140396863" duration="1717000" />
+      <workItem from="1587143873162" duration="2772000" />
+      <workItem from="1587147394320" duration="691000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="275" y="21" key="#Project_Structure" timestamp="1586860390667">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="21" key="#Project_Structure/0.0.1366.728@0.0.1366.728" timestamp="1586860390667" />
+    <state x="137" y="17" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587141684633">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="137" y="17" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1587141684633" />
+    <state x="488" y="63" key="#com.intellij.ide.util.MemberChooser" timestamp="1587140993027">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="488" y="63" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1587140993027" />
+    <state x="413" y="146" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587141716505">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="413" y="146" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1366.728@0.0.1366.728" timestamp="1587141716505" />
+    <state x="238" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1586949083321">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="238" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1586949083321" />
+    <state x="413" y="109" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1586887620028">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="413" y="109" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1586887620028" />
+    <state x="400" y="11" key="#inca_ceva" timestamp="1587141719105">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="400" y="11" key="#inca_ceva/0.0.1366.728@0.0.1366.728" timestamp="1587141719105" />
+    <state x="441" y="101" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1587147953104">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="441" y="101" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1366.728@0.0.1366.728" timestamp="1587147953104" />
+    <state x="462" y="117" key="FileChooserDialogImpl" timestamp="1587147948105">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="462" y="117" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1587147948105" />
+    <state width="1322" height="90" key="GridCell.Tab.0.bottom" timestamp="1587148101144">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="90" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1587148101144" />
+    <state width="1322" height="90" key="GridCell.Tab.0.center" timestamp="1587148101144">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="90" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1587148101144" />
+    <state width="1322" height="90" key="GridCell.Tab.0.left" timestamp="1587148101144">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="90" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1587148101144" />
+    <state width="1322" height="90" key="GridCell.Tab.0.right" timestamp="1587148101144">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="90" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1587148101144" />
+    <state width="1322" height="217" key="GridCell.Tab.1.bottom" timestamp="1586892086818">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="217" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1586892086818" />
+    <state width="1322" height="217" key="GridCell.Tab.1.center" timestamp="1586892086818">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="217" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1586892086818" />
+    <state width="1322" height="217" key="GridCell.Tab.1.left" timestamp="1586892086818">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="217" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1586892086818" />
+    <state width="1322" height="217" key="GridCell.Tab.1.right" timestamp="1586892086818">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="217" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1586892086818" />
+    <state x="163" y="0" key="SettingsEditor" timestamp="1587141564277">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="163" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1587141564277" />
+    <state x="378" y="186" key="com.intellij.ide.util.TipDialog" timestamp="1587147427126">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="378" y="186" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1587147427126" />
+    <state x="65" y="64" key="new project wizard" timestamp="1586881711326">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="65" y="64" key="new project wizard/0.0.1366.728@0.0.1366.728" timestamp="1586881711326" />
+    <state x="389" y="0" key="refactoring.ChangeSignatureDialog" timestamp="1586851937549">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="389" y="0" key="refactoring.ChangeSignatureDialog/0.0.1366.728@0.0.1366.728" timestamp="1586851937549" />
+  </component>
+</project>
