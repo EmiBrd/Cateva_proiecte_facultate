@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2016.4 (64-bit)
+# SW Build 1756540 on Mon Jan 23 19:11:23 MST 2017
+# IP Build 1755317 on Mon Jan 23 20:30:07 MST 2017
+# Start of session at: Sat Dec 12 23:10:23 2020
+# Process ID: 8900
+# Current directory: C:/D/An3/An3_sem1_exerc/SSC/SSC_proiect/Wallace_Tree_16/Wallace_Tree_16.runs/synth_2
+# Command line: vivado.exe -log Inmultire_wallace_16_mainn.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source Inmultire_wallace_16_mainn.tcl
+# Log file: C:/D/An3/An3_sem1_exerc/SSC/SSC_proiect/Wallace_Tree_16/Wallace_Tree_16.runs/synth_2/Inmultire_wallace_16_mainn.vds
+# Journal file: C:/D/An3/An3_sem1_exerc/SSC/SSC_proiect/Wallace_Tree_16/Wallace_Tree_16.runs/synth_2\vivado.jou
+#-----------------------------------------------------------
+source Inmultire_wallace_16_mainn.tcl -notrace

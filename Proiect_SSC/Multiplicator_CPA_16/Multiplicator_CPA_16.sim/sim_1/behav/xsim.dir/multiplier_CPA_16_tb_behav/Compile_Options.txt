@@ -1,0 +1,1 @@
+-wto "a55bba7296d34e269d3c6edf1c4469e3" --debug "typical" --relax --mt "2" -L "xil_defaultlib" -L "secureip" --snapshot "multiplier_CPA_16_tb_behav" "xil_defaultlib.multiplier_CPA_16_tb" -log "elaborate.log" 

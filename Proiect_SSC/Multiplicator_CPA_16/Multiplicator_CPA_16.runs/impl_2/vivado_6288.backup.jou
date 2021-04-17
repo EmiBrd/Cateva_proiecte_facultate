@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2016.4 (64-bit)
+# SW Build 1756540 on Mon Jan 23 19:11:23 MST 2017
+# IP Build 1755317 on Mon Jan 23 20:30:07 MST 2017
+# Start of session at: Sat Dec 12 22:09:04 2020
+# Process ID: 6288
+# Current directory: C:/D/An3/An3_sem1_exerc/SSC/SSC_proiect/Multiplicator_CPA_16/Multiplicator_CPA_16.runs/impl_2
+# Command line: vivado.exe -log Inmultire_mainn_CPA_16.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source Inmultire_mainn_CPA_16.tcl -notrace
+# Log file: C:/D/An3/An3_sem1_exerc/SSC/SSC_proiect/Multiplicator_CPA_16/Multiplicator_CPA_16.runs/impl_2/Inmultire_mainn_CPA_16.vdi
+# Journal file: C:/D/An3/An3_sem1_exerc/SSC/SSC_proiect/Multiplicator_CPA_16/Multiplicator_CPA_16.runs/impl_2\vivado.jou
+#-----------------------------------------------------------
+source Inmultire_mainn_CPA_16.tcl -notrace

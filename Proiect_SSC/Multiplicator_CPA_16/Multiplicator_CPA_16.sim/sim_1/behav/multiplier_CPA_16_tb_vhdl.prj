@@ -1,0 +1,8 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  "../../../Multiplicator_CPA_16.srcs/sources_1/new/full_adder.vhd"
+vhdl xil_defaultlib  "../../../Multiplicator_CPA_16.srcs/sources_1/new/carry_prop_adder.vhd"
+vhdl xil_defaultlib  "../../../Multiplicator_CPA_16.srcs/sources_1/new/multiplier_CPA_16.vhd"
+vhdl xil_defaultlib  "../../../Multiplicator_CPA_16.srcs/sources_1/new/multiplier_CPA_16_tb.vhd"
+
+# Do not sort compile order
+nosort

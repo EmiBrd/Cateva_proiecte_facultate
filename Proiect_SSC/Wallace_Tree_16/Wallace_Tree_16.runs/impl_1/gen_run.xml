@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="impl_1" LaunchPart="xc7a50tcsg324-1" LaunchTime="1607807268">
+  <File Type="PWROPT-DRC" Name="wallace16_tb_drc_pwropted.rpt"/>
+  <File Type="OPT-METHODOLOGY-DRC" Name="wallace16_tb_methodology_drc_opted.rpt"/>
+  <File Type="INIT-TIMING" Name="wallace16_tb_timing_summary_init.rpt"/>
+  <File Type="ROUTE-PWR-RPX" Name="wallace16_tb_power_routed.rpx"/>
+  <File Type="PA-TCL" Name="wallace16_tb.tcl"/>
+  <File Type="OPT-HWDEF" Name="wallace16_tb.hwdef"/>
+  <File Type="RDI-RDI" Name="wallace16_tb.vdi"/>
+  <File Type="OPT-DCP" Name="wallace16_tb_opt.dcp"/>
+  <File Type="OPT-DRC" Name="wallace16_tb_drc_opted.rpt"/>
+  <File Type="OPT-TIMING" Name="wallace16_tb_timing_summary_opted.rpt"/>
+  <File Type="PWROPT-DCP" Name="wallace16_tb_pwropt.dcp"/>
+  <File Type="PWROPT-TIMING" Name="wallace16_tb_timing_summary_pwropted.rpt"/>
+  <File Type="PLACE-DCP" Name="wallace16_tb_placed.dcp"/>
+  <File Type="PLACE-IO" Name="wallace16_tb_io_placed.rpt"/>
+  <File Type="PLACE-CLK" Name="wallace16_tb_clock_utilization_placed.rpt"/>
+  <File Type="PLACE-UTIL" Name="wallace16_tb_utilization_placed.rpt"/>
+  <File Type="PLACE-UTIL-PB" Name="wallace16_tb_utilization_placed.pb"/>
+  <File Type="PLACE-CTRL" Name="wallace16_tb_control_sets_placed.rpt"/>
+  <File Type="PLACE-SIMILARITY" Name="wallace16_tb_incremental_reuse_placed.rpt"/>
+  <File Type="PLACE-PRE-SIMILARITY" Name="wallace16_tb_incremental_reuse_pre_placed.rpt"/>
+  <File Type="PLACE-TIMING" Name="wallace16_tb_timing_summary_placed.rpt"/>
+  <File Type="POSTPLACE-PWROPT-DCP" Name="wallace16_tb_postplace_pwropt.dcp"/>
+  <File Type="POSTPLACE-PWROPT-TIMING" Name="wallace16_tb_timing_summary_postplace_pwropted.rpt"/>
+  <File Type="PHYSOPT-DCP" Name="wallace16_tb_physopt.dcp"/>
+  <File Type="PHYSOPT-DRC" Name="wallace16_tb_drc_physopted.rpt"/>
+  <File Type="PHYSOPT-TIMING" Name="wallace16_tb_timing_summary_physopted.rpt"/>
+  <File Type="ROUTE-ERROR-DCP" Name="wallace16_tb_routed_error.dcp"/>
+  <File Type="ROUTE-DCP" Name="wallace16_tb_routed.dcp"/>
+  <File Type="ROUTE-BLACKBOX-DCP" Name="wallace16_tb_routed_bb.dcp"/>
+  <File Type="ROUTE-DRC" Name="wallace16_tb_drc_routed.rpt"/>
+  <File Type="ROUTE-DRC-PB" Name="wallace16_tb_drc_routed.pb"/>
+  <File Type="BG-BIN" Name="wallace16_tb.bin"/>
+  <File Type="ROUTE-DRC-RPX" Name="wallace16_tb_drc_routed.rpx"/>
+  <File Type="BG-DRC" Name="wallace16_tb.drc"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="wallace16_tb_methodology_drc_routed.rpt"/>
+  <File Type="BITSTR-MSK" Name="wallace16_tb.msk"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="wallace16_tb_methodology_drc_routed.rpx"/>
+  <File Type="BG-BGN" Name="wallace16_tb.bgn"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="wallace16_tb_methodology_drc_routed.pb"/>
+  <File Type="ROUTE-PWR" Name="wallace16_tb_power_routed.rpt"/>
+  <File Type="ROUTE-PWR-SUM" Name="wallace16_tb_power_summary_routed.pb"/>
+  <File Type="ROUTE-STATUS" Name="wallace16_tb_route_status.rpt"/>
+  <File Type="ROUTE-STATUS-PB" Name="wallace16_tb_route_status.pb"/>
+  <File Type="ROUTE-TIMINGSUMMARY" Name="wallace16_tb_timing_summary_routed.rpt"/>
+  <File Type="ROUTE-TIMING-PB" Name="wallace16_tb_timing_summary_routed.pb"/>
+  <File Type="ROUTE-TIMING-RPX" Name="wallace16_tb_timing_summary_routed.rpx"/>
+  <File Type="ROUTE-SIMILARITY" Name="wallace16_tb_incremental_reuse_routed.rpt"/>
+  <File Type="ROUTE-CLK" Name="wallace16_tb_clock_utilization_routed.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-DCP" Name="wallace16_tb_postroute_physopt.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="wallace16_tb_postroute_physopt_bb.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="wallace16_tb_timing_summary_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="wallace16_tb_timing_summary_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="wallace16_tb_timing_summary_postroute_physopted.rpx"/>
+  <File Type="BG-BIT" Name="wallace16_tb.bit"/>
+  <File Type="BITSTR-RBT" Name="wallace16_tb.rbt"/>
+  <File Type="BITSTR-NKY" Name="wallace16_tb.nky"/>
+  <File Type="BITSTR-BMM" Name="wallace16_tb_bd.bmm"/>
+  <File Type="BITSTR-MMI" Name="wallace16_tb.mmi"/>
+  <File Type="BITSTR-SYSDEF" Name="wallace16_tb.sysdef"/>
+  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/new/full_adder.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/wallace16.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/wallace16_tb.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/MPG.vhd">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/displ7seg.vhd">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/Inmultire_wallace_16_mainn.vhd">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="wallace16_tb"/>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
+    <Filter Type="Constrs"/>
+    <File Path="$PSRCDIR/constrs_1/imports/SSC_lab/Nexys4DDR_Master.xdc">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../SSC_lab/Nexys4DDR_Master.xdc"/>
+        <Attr Name="ImportTime" Val="1490114608"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TargetConstrsFile" Val="$PSRCDIR/constrs_1/imports/SSC_lab/Nexys4DDR_Master.xdc"/>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2016"/>
+    <Step Id="init_design"/>
+    <Step Id="opt_design"/>
+    <Step Id="power_opt_design"/>
+    <Step Id="place_design"/>
+    <Step Id="post_place_power_opt_design"/>
+    <Step Id="phys_opt_design"/>
+    <Step Id="route_design"/>
+    <Step Id="post_route_phys_opt_design"/>
+    <Step Id="write_bitstream"/>
+  </Strategy>
+</GenRun>

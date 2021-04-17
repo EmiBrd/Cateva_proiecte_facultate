@@ -1,0 +1,26 @@
+#-----------------------------------------------------------
+# Vivado v2016.4 (64-bit)
+# SW Build 1756540 on Mon Jan 23 19:11:23 MST 2017
+# IP Build 1755317 on Mon Jan 23 20:30:07 MST 2017
+# Start of session at: Sat Dec 12 15:58:08 2020
+# Process ID: 6504
+# Current directory: C:/D/An3/An3_sem1_exerc/SSC/SSC_proiect/Multiplicator_CPA_16
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent3692 C:\D\An3\An3_sem1_exerc\SSC\SSC_proiect\Multiplicator_CPA_16\Multiplicator_CPA_16.xpr
+# Log file: C:/D/An3/An3_sem1_exerc/SSC/SSC_proiect/Multiplicator_CPA_16/vivado.log
+# Journal file: C:/D/An3/An3_sem1_exerc/SSC/SSC_proiect/Multiplicator_CPA_16\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/D/An3/An3_sem1_exerc/SSC/SSC_proiect/Multiplicator_CPA_16/Multiplicator_CPA_16.xpr
+set_property -name {xsim.simulate.runtime} -value {150000ns} -objects [get_filesets sim_1]
+launch_simulation
+source multiplier_CPA_16_tb.tcl
+restart
+run 10000 ns
+run 10000 ns
+run 10000 ns
+run 10000 ns
+run 10000 ns
+run 10000 ns
+run 10000 ns
+run 10000 ns
+close_sim

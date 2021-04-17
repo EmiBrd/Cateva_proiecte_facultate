@@ -1,0 +1,71 @@
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (win64) Build 1756540 Mon Jan 23 19:11:23 MST 2017
+| Date         : Sat Dec 26 17:01:11 2020
+| Host         : DESKTOP-PS7LJIR running 64-bit major release  (build 9200)
+| Command      : report_control_sets -verbose -file Inmultire_mainn_CPA_16_control_sets_placed.rpt
+| Design       : Inmultire_mainn_CPA_16
+| Device       : xc7a50t
+---------------------------------------------------------------------------------------------------
+
+Control Set Information
+
+Table of Contents
+-----------------
+1. Summary
+2. Flip-Flop Distribution
+3. Detailed Control Set Information
+
+1. Summary
+----------
+
++----------------------------------------------------------+-------+
+|                          Status                          | Count |
++----------------------------------------------------------+-------+
+| Number of unique control sets                            |     8 |
+| Unused register locations in slices containing registers |    24 |
++----------------------------------------------------------+-------+
+
+
+2. Flip-Flop Distribution
+-------------------------
+
++--------------+-----------------------+------------------------+-----------------+--------------+
+| Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
++--------------+-----------------------+------------------------+-----------------+--------------+
+| No           | No                    | No                     |              10 |            6 |
+| No           | No                    | Yes                    |               0 |            0 |
+| No           | Yes                   | No                     |              19 |            5 |
+| Yes          | No                    | No                     |              48 |           38 |
+| Yes          | No                    | Yes                    |               0 |            0 |
+| Yes          | Yes                   | No                     |              19 |           15 |
++--------------+-----------------------+------------------------+-----------------+--------------+
+
+
+3. Detailed Control Set Information
+-----------------------------------
+
++----------------+---------------------------------+--------------------------------+------------------+----------------+
+|  Clock Signal  |          Enable Signal          |        Set/Reset Signal        | Slice Load Count | Bel Load Count |
++----------------+---------------------------------+--------------------------------+------------------+----------------+
+|  Clk_IBUF_BUFG | MPG_start2/term_aux             | MPG_start/y_primeste_x_aux_reg |                1 |              1 |
+|  Clk_IBUF_BUFG | MPG_start2/x_primeste_x_aux_reg | MPG_term/en_rez                |                1 |              2 |
+|  Clk_IBUF_BUFG |                                 |                                |                6 |             10 |
+|  Clk_IBUF_BUFG | MPG_start2/Data_aux_reg[16]     |                                |               11 |             16 |
+|  Clk_IBUF_BUFG | MPG_start2/Data_aux_reg[16]     | MPG_term/Data_aux_reg[31]      |               13 |             16 |
+|  Clk_IBUF_BUFG | MPG_start2/E[0]                 |                                |               14 |             16 |
+|  Clk_IBUF_BUFG | MPG_start/q_out                 |                                |               13 |             16 |
+|  Clk_IBUF_BUFG |                                 | display1/Num[19]_i_1_n_0       |                5 |             19 |
++----------------+---------------------------------+--------------------------------+------------------+----------------+
+
+
++--------+-----------------------+
+| Fanout | Number of ControlSets |
++--------+-----------------------+
+| 1      |                     1 |
+| 2      |                     1 |
+| 10     |                     1 |
+| 16+    |                     5 |
++--------+-----------------------+
+
+
