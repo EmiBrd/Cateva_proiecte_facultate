@@ -1,0 +1,279 @@
+
+#include <Wire.h>
+
+int player_1_aprinde_led = 2;
+int player_2_aprinde_led = 4;
+int buton_de_reset = 3;
+
+int led_mode[3][3] = { {5, 6, 7}, {8, 9, 10}, {11, 12, 13} };
+
+// 0 = led_off, 1 = player_1_led_on, 2 = player_2_led_on
+int aprindere_culoare_led[3][3]; 
+
+int nr_mutari = 0;
+int al_cui_e_randul = 1;
+int x = 0;
+
+
+void setup() {
+  pinMode(player_1_aprinde_led, INPUT);
+  pinMode(player_2_aprinde_led, INPUT);
+  
+  pinMode(buton_de_reset,INPUT_PULLUP);
+  
+  for(int i=0; i<3; i++){
+    for(int j=0; j<3; j++){
+      pinMode(led_mode[i][j], OUTPUT);
+    }
+  }
+  
+  Wire.begin();
+  
+  Serial.begin(9600);
+}
+
+
+void loop() {
+  //Serial.println("al_cui_e_randul=");
+  //Serial.println(al_cui_e_randul);
+  
+  if (digitalRead(buton_de_reset) == LOW){
+  	reset_joc();
+    board();
+  }
+  
+  if (al_cui_e_randul == 1){
+    int row = 100;
+    int col = 100;
+    //Serial.println("Player 1");
+  	int button = alege_buton_input();
+    //Serial.println(button);
+  	if(verif_pozitie_libera(button)){
+        pinMode(player_2_aprinde_led, INPUT);
+    	button--;
+    	row = button / 3;
+    	col = button % 3;
+    	aprindere_culoare_led[row][col] = 1;
+        
+        for(int i=0; i<3; i++){
+          for(int j=0; j<3; j++){
+            if (aprindere_culoare_led[i][j] == 1){
+              //Serial.println("E 1");
+          	  digitalWrite(led_mode[i][j], HIGH); 
+        	}
+          }
+        }
+        board();
+        pinMode(player_1_aprinde_led, OUTPUT);      
+    	nr_mutari++; 
+    	delay(50);      
+    	if(verif_castigator() ){
+      		reset_joc();  
+            board();
+    	}
+    }  
+    if (aprindere_culoare_led[row][col] == 1){
+      al_cui_e_randul = 2;
+      //Serial.println("al_cui_e_randul e 2");
+    }
+    if (nr_mutari >= 9) {
+      reset_joc();
+      board();
+      x = 0;
+      Wire.beginTransmission(9); // transmitem spre device #9
+ 	  Wire.write(x); // trimitem x
+ 	  Wire.endTransmission(); // oprim transmisia
+    }
+  }
+  
+  else if (al_cui_e_randul == 2){
+      int row2 = 100;
+      int col2 = 100;
+      //Serial.println("Player 2");
+      int button2 = alege_buton_input();
+  	  //Serial.println("Gata, am apasat");
+      //Serial.println(button2);
+  	  if(verif_pozitie_libera(button2) ){
+        pinMode(player_1_aprinde_led, INPUT);        
+      	button2--;
+    	row2 = button2 / 3;
+    	col2 = button2 % 3;
+    	aprindere_culoare_led[row2][col2] = 2;
+        
+        for(int i=0; i<3; i++){
+          for(int j=0; j<3; j++){
+            if (aprindere_culoare_led[i][j] == 2){
+              //Serial.println("E 2");
+          	  digitalWrite(led_mode[i][j], HIGH);              
+        	}
+          }
+        }
+        board();
+        pinMode(player_2_aprinde_led, OUTPUT);
+        nr_mutari++;
+        delay(50);
+  	  }
+    
+      pinMode(player_1_aprinde_led, INPUT);      
+      if(verif_castigator()){
+        reset_joc();
+        board();
+      }  
+    
+      if (aprindere_culoare_led[row2][col2] == 2){
+        al_cui_e_randul = 1;
+        //Serial.println("al_cui_e_randul e 1");
+      }   
+  }
+  
+  // pune pe off toate ledurile
+  for(int index = 5; index <= 13; index++){ 
+    digitalWrite(index, LOW);
+  }
+  
+  delay(10);
+}
+
+// afiseaza tabla de joc
+void board(){
+  for(int i=0; i<3; i++){
+    for(int j=0; j<3; j++){
+      Serial.print("|");
+      if (aprindere_culoare_led[i][j] == 0){
+    	Serial.print(" ");
+      }
+      else if(aprindere_culoare_led[i][j] == 1){
+    	Serial.print("X");
+      }
+      else if(aprindere_culoare_led[i][j] == 2){
+    	Serial.print("O");
+      }
+    }
+    Serial.println("|");
+  }
+  Serial.println("");
+}
+
+// verifica daca avem castigator
+bool verif_castigator(){
+  for(int player = 1; player <= 2; player++){
+    x = player;
+    if(aprindere_culoare_led[0][0] == player){
+      // verif diag principala daca are doar X sau 0
+      if((aprindere_culoare_led[1][1] == player) && (aprindere_culoare_led[2][2] == player)){
+        Wire.beginTransmission(9); // transmitem spre device #9
+ 	    Wire.write(x); // trimitem x
+ 	    Wire.endTransmission(); // oprim transmisia
+        return true;
+      }
+      // verif coloana 0 daca are doar X sau 0
+      if((aprindere_culoare_led[1][0] == player) && (aprindere_culoare_led[2][0] == player)){
+        Wire.beginTransmission(9); // transmitem spre device #9
+ 	    Wire.write(x); // trimitem x
+ 	    Wire.endTransmission(); // oprim transmisia
+        return true; 
+      }
+      // verif randul 0 daca are doar X sau 0
+      if((aprindere_culoare_led[0][1] == player) && (aprindere_culoare_led[0][2] == player)){ 
+        Wire.beginTransmission(9); // transmitem spre device #9
+ 	    Wire.write(x); // trimitem x
+ 	    Wire.endTransmission(); // oprim transmisia
+        return true; 
+      }
+    }
+    // verif diag secundara daca are doar X sau 0
+    if((aprindere_culoare_led[2][0] == player) && (aprindere_culoare_led[1][1] == player) && (aprindere_culoare_led[0][2] == player)){
+      Wire.beginTransmission(9); // transmitem spre device #9
+ 	    Wire.write(x); // trimitem x
+ 	    Wire.endTransmission(); // oprim transmisia
+      return true; //right-up diag
+    }
+    // verif randul 1 daca are doar X sau 0
+    if((aprindere_culoare_led[1][0] == player) && (aprindere_culoare_led[1][1] == player) && (aprindere_culoare_led[1][2] == player)){
+      Wire.beginTransmission(9); // transmitem spre device #9
+ 	    Wire.write(x); // trimitem x
+ 	    Wire.endTransmission(); // oprim transmisia
+      return true;
+    }
+    // verif randul 2 daca are doar X sau 0
+    if((aprindere_culoare_led[2][0] == player) && (aprindere_culoare_led[2][1] == player) && (aprindere_culoare_led[2][2] == player)){ 
+      Wire.beginTransmission(9); // transmitem spre device #9
+ 	    Wire.write(x); // trimitem x
+ 	    Wire.endTransmission(); // oprim transmisia
+      return true;
+    }
+    // verif coloana 1 daca are doar X sau 0
+    if((aprindere_culoare_led[0][1] == player) && (aprindere_culoare_led[1][1] == player) && (aprindere_culoare_led[2][1] == player)){ 
+      Wire.beginTransmission(9); // transmitem spre device #9
+ 	    Wire.write(x); // trimitem x
+ 	    Wire.endTransmission(); // oprim transmisia
+      return true; 
+    }
+    // verif coloana 2 daca are doar X sau 0
+    if((aprindere_culoare_led[0][2] == player) && (aprindere_culoare_led[1][2] == player) && (aprindere_culoare_led[2][2] == player)){
+      Wire.beginTransmission(9); // transmitem spre device #9
+ 	    Wire.write(x); // trimitem x
+ 	    Wire.endTransmission(); // oprim transmisia
+      return true; 
+    }
+  }
+  
+  return false;
+}
+
+// reseteaza jocul
+void reset_joc(){
+  nr_mutari = 0;
+  al_cui_e_randul = 1;
+  for(int row = 0; row < 3; row++){
+    for(int col = 0; col < 3; col++){
+        aprindere_culoare_led[row][col] = 0;
+    }
+  }
+}
+
+// verifica daca pozitia pe care vrem sa marcam
+// un simbol este libera
+int verif_pozitie_libera(int button){
+  int res = 0;
+  button--;
+  int row = button / 3;
+  int col = button % 3;
+  
+  if(aprindere_culoare_led[row][col] == 0){ 
+    res = 1;
+  }
+  return res;
+}
+
+// indica ce buton a fost apasat
+int alege_buton_input(){
+  int buton_row_1 = analogRead(A0);
+  int buton_row_2 = analogRead(A1);
+  int buton_row_3 = analogRead(A2);
+  // Val analogica pt: 1013 = left button, 
+  // 930 = middle button, 512 = right button
+  // stanga - sus
+  if (buton_row_1 == 1013) return 1;
+  // mijloc - sus
+  if (buton_row_1 == 930) return 2;
+  // dreapta - sus
+  if (buton_row_1 == 512) return 3;
+  
+  // stanga - mijloc
+  if (buton_row_2 == 1013) return 4;
+  // mijloc - mijloc
+  if (buton_row_2 == 930) return 5;
+  // dreapta - mijloc
+  if (buton_row_2 == 512) return 6;
+  
+  // stanga - jos
+  if (buton_row_3 == 1013) return 7;
+  // mijloc - jos
+  if (buton_row_3 == 930) return 8;
+  // dreapta - jos
+  if (buton_row_3 == 512) return 9;
+  
+  return 0;
+}
+

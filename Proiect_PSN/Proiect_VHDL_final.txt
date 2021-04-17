@@ -1,0 +1,585 @@
+	 
+entity BCD is
+	port (nr_in: in bit_vector (3 downto 0); nr_out: out bit_vector (6 downto 0));
+end entity;
+
+architecture arh_BCD of BCD is
+begin 
+	process (nr_in)												 
+	begin  
+		case nr_in is						     -- la simulare   0 -> on  si  1 -> off
+			when "0000" => nr_out <= "0000001";	 --	0
+			when "0001" => nr_out <= "1001111";	 --	1			-- a, b	 aprinse
+			when "0010" => nr_out <= "0010010";	 --	2
+			when "0011" => nr_out <= "0000110";	 --	3
+			when "0100" => nr_out <= "1001100";	 --	4
+			when "0101" => nr_out <= "0100100";	 --	5
+			when "0110" => nr_out <= "0100000";	 --	6
+			when "0111" => nr_out <= "0001111";	 --	7
+			when "1000" => nr_out <= "0000000";	 -- 8
+			when "1001" => nr_out <= "0000100";	 -- 9
+			when "1010" => nr_out <= "1111110";  -- Semnul minus [-]  
+			when "1011" => nr_out <= "0110001";  -- Grade Celsius  
+			when others => nr_out <= "1111111";  -- Toate ledurile sunt stinse
+		end case;
+	end process;
+	end architecture arh_BCD;
+ 
+
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity codificator is
+	port (i3,i2,i1,i0 :in bit_vector (3 downto 0); O3,O2,O1,O0: out std_logic_vector (3 downto 0));
+end entity;	 
+
+architecture arh_codificator of codificator is 
+signal iesire0, iesire1, iesire2, iesire3: std_logic_vector (3 downto 0) :="0000";
+signal oo3, oo2, oo1, oo0: integer;
+begin 
+	 process(i3,i2,i1,i0)
+	begin
+			case i3 is
+			when "0000" => oo3 <= 0;
+			when "0001" => oo3 <= 1;
+			when "0010" => oo3 <= 2;
+			when "0011" => oo3 <= 3;
+			when "0100" => oo3 <= 4;
+			when "0101" => oo3 <= 5;
+			when "0110" => oo3 <= 6;
+			when "0111" => oo3 <= 7;
+			when "1000" => oo3 <= 8;
+			when "1001" => oo3 <= 9;
+			when others => oo3 <= 9999;
+		end case;		 
+		
+		case i2 is
+			when "0000" => oo2 <= 0;
+			when "0001" => oo2 <= 1;
+			when "0010" => oo2 <= 2;
+			when "0011" => oo2 <= 3;
+			when "0100" => oo2 <= 4;
+			when "0101" => oo2 <= 5;
+			when "0110" => oo2 <= 6;
+			when "0111" => oo2 <= 7;
+			when "1000" => oo2 <= 8;
+			when "1001" => oo2 <= 9;
+			when others => oo2 <= 9999;
+		end case;  
+		
+		case i1 is
+			when "0000" => oo1 <= 0;
+			when "0001" => oo1 <= 1;
+			when "0010" => oo1 <= 2;
+			when "0011" => oo1 <= 3;
+			when "0100" => oo1 <= 4;
+			when "0101" => oo1 <= 5;
+			when "0110" => oo1 <= 6;
+			when "0111" => oo1 <= 7;
+			when "1000" => oo1 <= 8;
+			when "1001" => oo1 <= 9;
+			when others => oo1 <= 9999;
+		end case;	 
+		
+		case i0 is
+			when "0000" => oo0 <= 0;
+			when "0001" => oo0 <= 1;
+			when "0010" => oo0 <= 2;
+			when "0011" => oo0 <= 3;
+			when "0100" => oo0 <= 4;
+			when "0101" => oo0 <= 5;
+			when "0110" => oo0 <= 6;
+			when "0111" => oo0 <= 7;
+			when "1000" => oo0 <= 8;
+			when "1001" => oo0 <= 9;
+			when others => oo0 <= 9999;
+		end case;
+		end process ;
+		
+		 process (oo0, oo1, oo2, oo3)
+		begin
+			 case oo3 is
+			when 0 => iesire3 <= "0000";	
+			when 1 => iesire3 <= "0001";
+			when 2 => iesire3 <= "0010";
+			when 3 => iesire3 <= "0011";
+			when 4 => iesire3 <= "0100";
+			when 5 => iesire3 <= "0101";
+			when 6 => iesire3 <= "0110";
+			when 7 => iesire3 <= "0111";
+			when 8 => iesire3 <= "1000";
+			when 9 => iesire3 <= "1001";
+			when others => iesire3 <= "1111";
+		end case;		   
+		
+		case oo2 is
+			when 0 => iesire2 <= "0000";	
+			when 1 => iesire2 <= "0001";
+			when 2 => iesire2 <= "0010";
+			when 3 => iesire2 <= "0011";
+			when 4 => iesire2 <= "0100";
+			when 5 => iesire2 <= "0101";
+			when 6 => iesire2 <= "0110";
+			when 7 => iesire2 <= "0111";
+			when 8 => iesire2 <= "1000";
+			when 9 => iesire2 <= "1001";
+			when others => iesire2 <= "1111";
+		end case;
+		
+		case oo1 is
+			when 0 => iesire1 <= "0000";	
+			when 1 => iesire1 <= "0001";
+			when 2 => iesire1 <= "0010";
+			when 3 => iesire1 <= "0011";
+			when 4 => iesire1 <= "0100";
+			when 5 => iesire1 <= "0101";
+			when 6 => iesire1 <= "0110";
+			when 7 => iesire1 <= "0111";
+			when 8 => iesire1 <= "1000";
+			when 9 => iesire1 <= "1001";
+			when others => iesire1 <= "1111";
+		end case;
+		
+		case oo0 is
+			when 0 => iesire0 <= "0000";	
+			when 1 => iesire0 <= "0001";
+			when 2 => iesire0 <= "0010";
+			when 3 => iesire0 <= "0011";
+			when 4 => iesire0 <= "0100";
+			when 5 => iesire0 <= "0101";
+			when 6 => iesire0 <= "0110";
+			when 7 => iesire0 <= "0111";
+			when 8 => iesire0 <= "1000";
+			when 9 => iesire0 <= "1001";
+			when others => iesire0 <= "1111";
+		end case;
+	end process ;	
+	O0<=iesire0;
+	O1<=iesire1;
+	O2<=iesire2;
+	O3<=iesire3;
+end architecture arh_codificator;  	 				
+ 	 				
+
+
+
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity MUX is
+	port (T3, T2, T1, T0, OM3, OM2, OM1, OM0, ZL3, ZL2, ZL1, ZL0: in std_logic_vector (3 downto 0);
+	sel: in std_logic_vector (1 downto 0);
+	y3,y2,y1,y0: out std_logic_vector (3 downto 0));
+end entity;
+
+architecture arh_MUX of MUX is	 
+
+begin 	
+	
+	process (sel, T3, T2, T1, T0, OM3, OM2, OM1, OM0, ZL3, ZL2, ZL1, ZL0) 
+		begin
+		case sel is			 
+			when "00" => y3<=T3; y2<=T2; y1<=T1; y0<=T0;
+			when "01" => y3<=OM3; y2<=OM2; y1<=OM1; y0<=OM0;
+			when "10" => y3<=ZL3; y2<=ZL2; y1<=ZL1; y0<=ZL0;
+			when others => y3<="1111"; y2<="1111"; y1<="1111"; y0<="1111";
+		end case; 									
+		end process;	
+end architecture arh_MUX;	
+
+
+
+
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity convertor_std_bit is
+	port (x3, x2, x1, x0: in std_logic_vector (3 downto 0);
+	r3, r2, r1, r0: out bit_vector (3 downto 0));
+end entity;
+
+architecture arh_convertor_std_bit of convertor_std_bit is	 
+signal tt3, tt2, tt1, tt0 : integer:= 0; 
+
+begin 		
+	p1: process ( x0, x1, x2, x3 )
+	begin
+		case x3 is
+			when "0000" => tt3 <= 0;
+			when "0001" => tt3 <= 1;
+			when "0010" => tt3 <= 2;
+			when "0011" => tt3 <= 3;
+			when "0100" => tt3 <= 4;
+			when "0101" => tt3 <= 5;
+			when "0110" => tt3 <= 6;
+			when "0111" => tt3 <= 7;
+			when "1000" => tt3 <= 8;
+			when "1001" => tt3 <= 9;
+			when others => tt3 <= 9999;
+		end case;		 
+		
+		case x2 is
+			when "0000" => tt2 <= 0;
+			when "0001" => tt2 <= 1;
+			when "0010" => tt2 <= 2;
+			when "0011" => tt2 <= 3;
+			when "0100" => tt2 <= 4;
+			when "0101" => tt2 <= 5;
+			when "0110" => tt2 <= 6;
+			when "0111" => tt2 <= 7;
+			when "1000" => tt2 <= 8;
+			when "1001" => tt2 <= 9;
+			when others => tt2 <= 9999;
+		end case;  
+		
+		case x1 is
+			when "0000" => tt1 <= 0;
+			when "0001" => tt1 <= 1;
+			when "0010" => tt1 <= 2;
+			when "0011" => tt1 <= 3;
+			when "0100" => tt1 <= 4;
+			when "0101" => tt1 <= 5;
+			when "0110" => tt1 <= 6;
+			when "0111" => tt1 <= 7;
+			when "1000" => tt1 <= 8;
+			when "1001" => tt1 <= 9;
+			when others => tt1 <= 9999;
+		end case;	 
+		
+		case x0 is
+			when "0000" => tt0 <= 0;
+			when "0001" => tt0 <= 1;
+			when "0010" => tt0 <= 2;
+			when "0011" => tt0 <= 3;
+			when "0100" => tt0 <= 4;
+			when "0101" => tt0 <= 5;
+			when "0110" => tt0 <= 6;
+			when "0111" => tt0 <= 7;
+			when "1000" => tt0 <= 8;
+			when "1001" => tt0 <= 9;
+			when others => tt0 <= 9999;
+		end case;
+		end process;
+		
+		
+		 process (tt3, tt2, tt1, tt0)
+		begin
+		case tt3 is
+			when 0 => r3 <= "0000";	
+			when 1 => r3 <= "0001";
+			when 2 => r3 <= "0010";
+			when 3 => r3 <= "0011";
+			when 4 => r3 <= "0100";
+			when 5 => r3 <= "0101";
+			when 6 => r3 <= "0110";
+			when 7 => r3 <= "0111";
+			when 8 => r3 <= "1000";
+			when 9 => r3 <= "1001";
+			when others => r3 <= "1111";
+		end case;		   
+		
+		case tt2 is
+			when 0 => r2 <= "0000";	
+			when 1 => r2 <= "0001";
+			when 2 => r2 <= "0010";
+			when 3 => r2 <= "0011";
+			when 4 => r2 <= "0100";
+			when 5 => r2 <= "0101";
+			when 6 => r2 <= "0110";
+			when 7 => r2 <= "0111";
+			when 8 => r2 <= "1000";
+			when 9 => r2 <= "1001";
+			when others => r2 <= "1111";
+		end case;
+		
+		case tt1 is
+			when 0 => r1 <= "0000";	
+			when 1 => r1 <= "0001";
+			when 2 => r1 <= "0010";
+			when 3 => r1 <= "0011";
+			when 4 => r1 <= "0100";
+			when 5 => r1 <= "0101";
+			when 6 => r1 <= "0110";
+			when 7 => r1 <= "0111";
+			when 8 => r1 <= "1000";
+			when 9 => r1 <= "1001";
+			when others => r1 <= "1111";
+		end case;
+		
+		case tt0 is
+			when 0 => r0 <= "0000";	
+			when 1 => r0 <= "0001";
+			when 2 => r0 <= "0010";
+			when 3 => r0 <= "0011";
+			when 4 => r0 <= "0100";
+			when 5 => r0 <= "0101";
+			when 6 => r0 <= "0110";
+			when 7 => r0 <= "0111";
+			when 8 => r0 <= "1000";
+			when 9 => r0 <= "1001";
+			when others => r0 <= "1111";
+		end case;
+		end process;
+	
+end architecture arh_convertor_std_bit;			   
+
+
+ 		  	  
+  
+ 
+ library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity numarator3 is
+    port (
+      Q3_1   :out std_logic_vector (1 downto 0); -- Output 
+      data_in3   :in  std_logic_vector (1 downto 0) ; -- Incarc numar in Parallel load 
+      PL   :in  bit;                     -- Parallel load enable
+      enable :in  bit;                     -- Enable counting
+      clk    :in  bit;                     -- Clock
+      reset  :in  bit                      -- Reset
+    );
+  end entity;
+  
+  architecture numarator_3 of numarator3 is
+      signal count : std_logic_vector(1 downto 0) :="00";
+  begin
+      process (clk, reset, enable, PL) begin
+          if (reset = '1') then
+              count <= "00";
+          elsif (clk'event and clk='1') then
+              if (PL = '1') then
+                  count <= data_in3;
+              elsif (enable = '1') then
+                  count <= count + 1;  
+              end if; 
+          end if; 
+		  if(count >= "11") then
+			  count <= "00";
+			  end if;
+      end process;
+      Q3_1 <= count;
+  end architecture numarator_3;
+
+
+
+
+ 
+ library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity numaratoareZL_OM is
+	port (QL_10, QL_01, QZ_10, QZ_01, QO_10, QO_01, QM_10, QM_01 : out std_logic_vector (3 downto 0);
+data_inL_10,data_inL_01,data_inZ_10,data_inZ_01,data_inO_10,data_inO_01,data_inM_10,data_inM_01:in  std_logic_vector (3 downto 0); --Incarc in Parallel load 
+      	PL   :in  bit;                     -- Parallel load enable
+      	enable :in  bit;                     -- Enable counting
+      	clk    :in  bit;                     -- Clock
+      	reset  :in  bit                      -- Reset
+    );
+end entity;
+
+architecture numaratoare_ZL_OM of numaratoareZL_OM is
+signal countM_01, countM_10, countO_01, countO_10, countZ_10, countL_10 : std_logic_vector (3 downto 0) :="0000";  
+signal countZ_01, countL_01 : std_logic_vector (3 downto 0) := "0001";
+  begin
+      process (clk, reset, enable, PL) begin
+          if (reset = '1') then
+              countM_01 <= "0000";	  
+			  countM_10 <= "0000";
+			  countO_01 <= "0000";	
+			  countO_10 <= "0000"; 
+			  
+			  countZ_01 <= "0001";	  
+			  countZ_10 <= "0000";
+			  countL_01 <= "0001";	
+			  countL_10 <= "0000";
+          elsif (clk'event and clk='1') then
+              if (PL = '1') then
+                  countM_01 <= data_inM_01;	
+				  countM_10 <= data_inM_10;
+				  countO_01 <= data_inO_01;
+				  countO_10 <= data_inO_10;	 
+				  
+				  countZ_01 <= data_inZ_01;	
+				  countZ_10 <= data_inZ_10;
+				  countL_01 <= data_inL_01;
+				  countL_10 <= data_inL_10;
+              elsif (enable = '1') then
+                  countM_01 <= countM_01 + 1;  	
+				  if(countM_01 >= "1001") then
+			  countM_01 <= "0000";
+			  countM_10 <= countM_10 + 1;
+		  end if;	
+		  
+		  if(countM_10 >= "0101" and countM_01 >="1001") then 
+			  countM_10 <= "0000";
+			  countM_01 <= "0000";
+			  countO_01 <= countO_01 + 1;
+		  end if;
+		  
+		  if(countO_01 >= "1001" and countM_10>="0101" and countM_01>="1001") then 
+			  countM_01 <="0000";
+			  countM_10 <="0000";
+			  countO_01 <= "0000";
+			  countO_10 <= countO_10 + 1;	
+		  end if;	  
+		  
+		  if(countO_10>="0010" and countO_01 >="0011" and countM_10 >="0101" and countM_01 >="1001") then
+				  countO_10 <="0000";
+				  countO_01 <="0000"; 
+				  countM_10 <="0000";
+				  countM_01 <="0000";
+				  countZ_01 <= countZ_01 + 1;
+		  end if; 
+		  
+		  if(countZ_01 >="1001" and countO_10>="0010" and countO_01 >="0011" and countM_10 >="0101" and countM_01 >="1001") then  
+				  countO_10 <="0000";
+				  countO_01 <="0000"; 
+				  countM_10 <= "0000";
+				  countM_01 <="0000";
+				  countZ_01 <= "0001";
+				  countZ_10 <= countZ_10 + 1;
+		  end if; 
+		  
+		  if(countZ_10 >="0010" and countZ_01 >="1001" and countO_10>="0010" and countO_01 >="0011" and countM_10 >="0101" and countM_01 >="1001") then
+				  countO_10 <="0000";
+				  countO_01 <="0000"; 
+				  countM_10 <= "0000";
+				  countM_01 <="0000";
+				  countZ_01 <= "0001";
+				  countZ_10 <= "0000";
+				  countL_01 <= countL_01 + 1;
+		  end if;  
+		  
+		  if(countL_01 >="1001" and countZ_10 >="0010" and countZ_01 >="1001" and countO_10>="0010" and countO_01 >="0011" and countM_10 >="0101" and countM_01 >="1001") then
+				  countO_10 <="0000";
+				  countO_01 <="0000"; 
+				  countM_10 <="0000";
+				  countM_01 <="0000";
+				  countZ_01 <="0001";
+				  countZ_10 <="0000"; 
+				  countL_01 <="0001";
+				  countL_10 <= countL_10 + 1;
+		  end if;
+		  
+		  if(countL_10 >= "0001" and countL_01 >= "0010" and countZ_10 >= "0010" and countZ_01 >="1001" and countO_10>="0010" and countO_01 >="0011" and countM_10 >="0101" and countM_01 >="1001") then
+				  countO_10 <="0000";
+				  countO_01 <="0000"; 
+				  countM_10 <="0000";
+				  countM_01 <="0000";
+				  countZ_01 <="0001";
+				  countZ_10 <="0000"; 
+				  countL_01 <="0001"; 
+				  countL_10 <="0000";
+		  end if;
+			  
+              end if; 
+          end if; 
+      end process;
+      QM_01 <= countM_01; 
+	  QM_10 <= countM_10;
+	  QO_01 <= countO_01;
+	  QO_10 <= countO_10;
+	  QZ_01 <= countZ_01;
+	  QZ_10 <= countZ_10;
+	  QL_01 <= countL_01;
+	  QL_10 <= countL_10;
+  end architecture numaratoare_ZL_OM;
+  
+  
+
+
+
+-- entitate proiect	
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+entity proiect_main is	
+	port (it0, it1, it2, it3, iom0, iom1, iom2, iom3, izl0, izl1, izl2, izl3 :in bit_vector (3 downto 0);
+	sel: in std_logic_vector (1 downto 0);	  
+	clk, reset, enable, PL : in bit;  
+	afis1000, afis0100, afis0010, afis0001 : out BIT_VECTOR (6 downto 0) );
+end proiect_main;
+
+--architecture pr_asamblat	  
+architecture arh_proiect_main of proiect_main is
+component BCD is
+	port (nr_in: in bit_vector(3 downto 0); nr_out: out bit_vector (6 downto 0)); 
+end component ;
+	
+component  codificator is
+	port (i3,i2,i1,i0 :in bit_vector (3 downto 0); O3,O2,O1,O0: out std_logic_vector (3 downto 0));
+end component codificator;
+	
+component MUX is
+	port (T3, T2, T1, T0, OM3, OM2, OM1, OM0, ZL3, ZL2, ZL1, ZL0: in std_logic_vector (3 downto 0);
+	sel: in std_logic_vector (1 downto 0);
+	y3,y2,y1,y0: out std_logic_vector (3 downto 0));
+end component MUX;
+
+component convertor_std_bit is
+	port (x3, x2, x1, x0: in std_logic_vector (3 downto 0);
+	r3, r2, r1, r0: out bit_vector (3 downto 0));
+end component convertor_std_bit;
+
+component numarator3 is
+    port (
+      Q3_1   :out std_logic_vector (1 downto 0); -- Output 
+      data_in3   :in  std_logic_vector (1 downto 0) ; -- Incarc numar in Parallel load 
+      PL   :in  bit;                     -- Parallel load enable
+      enable :in  bit;                     -- Enable counting
+      clk    :in  bit;                     -- Clock
+      reset  :in  bit                      -- Reset
+    );
+end component numarator3;
+
+component numaratoareZL_OM is
+	port (QL_10, QL_01, QZ_10, QZ_01, QO_10, QO_01, QM_10, QM_01 : out std_logic_vector (3 downto 0);
+data_inL_10,data_inL_01,data_inZ_10,data_inZ_01,data_inO_10,data_inO_01,data_inM_10,data_inM_01:in  std_logic_vector (3 downto 0); --Incarc in Parallel load 
+      	PL   :in  bit;                     -- Parallel load enable
+      	enable :in  bit;                     -- Enable counting
+      	clk    :in  bit;                     -- Clock
+      	reset  :in  bit                      -- Reset
+    );
+end component numaratoareZL_OM;
+											 
+signal T3, T2, T1, T0, OM3, OM2, OM1, OM0, ZL3, ZL2, ZL1, ZL0 : std_logic_vector (3 downto 0);  -- Codificator	                        						   -- Intrari numaratoare
+signal QM_01, QM_10, QO_01, QO_10, QZ_01, QZ_10, QL_01, QL_10: std_logic_vector (3 downto 0);
+signal Q3_1 : std_logic_vector (1 downto 0); 			--Iesiri numaratoare	
+signal y0, y1, y2, y3 : std_logic_vector (3 downto 0);			-- Iesiri MUX 
+signal r0, r1, r2, r3 : bit_vector (3 downto 0);
+		
+begin
+--	 Interconectarea componentelor													
+C1: codificator port map (it3, it2, it1, it0, T3, T2, T1, T0);
+C2: codificator port map (iom3, iom2, iom1, iom0, OM3, OM2, OM1, OM0);	  
+C3: codificator port map (izl3, izl2, izl1, izl0, ZL3, ZL2, ZL1, ZL0);	
+C4: numaratoareZL_OM port map (QL_10, QL_01, QZ_10, QZ_01, QO_10, QO_01, QM_10, QM_01, ZL3, ZL2, ZL1, ZL0, OM3 ,OM2 ,OM1, OM0, PL, enable, clk, reset); 
+C5: numarator3 port map (Q3_1, sel, PL, enable, clk, reset);
+C6: MUX port map (T3, T2, T1, T0, QO_10, QO_01, QM_10, QM_01, QL_10, QL_01, QZ_10, QZ_01, Q3_1, y3, y2, y1, y0);	
+C7: convertor_std_bit port map (y3, y2, y1, y0, r3, r2, r1, r0);
+C8: BCD port map (r3, afis1000);
+C9: BCD port map (r2, afis0100);	  
+C10: BCD port map (r1, afis0010);
+C11: BCD port map (r0, afis0001);
+
+end arh_proiect_main;
+	

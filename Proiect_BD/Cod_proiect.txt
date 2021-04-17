@@ -1,0 +1,602 @@
+
+drop database if exists tenis;
+CREATE DATABASE IF NOT EXISTS tenis;
+use tenis;
+
+drop table if exists staff_jucator;
+create table if not exists staff_jucator(    	##
+	id_staff_jucator int unique auto_increment not null primary key,
+    nume_antrenor varchar(50),
+    adresa_antrenor varchar(50),
+    nume_medic varchar(50),
+    nume_preparator_fizic varchar(50)
+);
+
+drop table if exists organizator_turneu;
+create table if not exists organizator_turneu( 			##
+	id_organizator_turneu int unique auto_increment not null primary key,
+    id_staff int unique,
+    nume_organizator varchar (50),
+    prenume_organizator varchar (50),
+    adresa varchar(50),
+    ##foreign key (id_organizator_turneu) references staff_jucator (id_staff_jucator)
+    foreign key (id_staff) references staff_jucator (id_staff_jucator)
+);
+
+drop table if exists turneu;
+create table if not exists turneu (				##
+	id_turneu int not null auto_increment primary key,
+    id_organizator_turneuuu int,
+    nume_turneu varchar(50) not null,
+    adresa_turneu varchar(50),
+    data_incepere date,
+    data_terminare date,
+    runda int,
+    bani_castigati int,
+    ##foreign key (id_turneu) references organizator_turneu (id_organizator_turneu)
+    foreign key (id_organizator_turneuuu) references organizator_turneu (id_organizator_turneu)
+);
+
+drop table if exists lista_sponsori;
+create table if not exists lista_sponsori(
+	id_sponsor int auto_increment primary key,
+    nume_sponsor varchar(50),
+    telefon_sponsor int,
+    adresa_sponsor varchar(50)
+);
+
+drop table if exists sponsor_turneu_actual;
+create table if not exists sponsor_turneu_actual(     ## 
+	id_sponsor_actual int auto_increment not null primary key,
+    id_turneu_actual int not null,
+    foreign key (id_sponsor_actual) references lista_sponsori (id_sponsor),
+    ##foreign key (id_turneu_actual) references turneu (id_turneu)
+    foreign key (id_sponsor_actual) references turneu (id_turneu)
+);
+
+drop table if exists jucator;
+create table if not exists jucator(					##
+	id_jucator int not null auto_increment primary key,
+    id_staffff int,
+    nume_jucator varchar (50),
+    prenume_jucator varchar(50),
+    adresa_jucator varchar(50),
+    pozitie_in_clasament int,
+    telefon int,
+    e_mail_adress varchar(50),
+    foreign key (id_jucator) references staff_jucator (id_staff_jucator)
+);
+
+drop table if exists participare_jucator_turneu;
+create table if not exists participare_jucator_turneu(		##
+    id_turneuuu int auto_increment primary key,
+    id_jucatorrr int,
+    rezultat_final varchar(50),
+    foreign key (id_turneuuu) references jucator (id_jucator),
+    foreign key (id_turneuuu) references turneu (id_turneu)
+);
+
+drop table if exists matchh;
+create table if not exists matchh(			##
+	id_jucator_2 int auto_increment not null primary key,
+    id_jucator_1 int,
+    durata_match int,
+    nr_spectatori int,
+    locatie_match varchar(50),
+    foreign key (id_jucator_2) references participare_jucator_turneu (id_turneuuu)
+);
+
+######################################################################################
+######################################################################################
+
+
+
+insert into staff_jucator (id_staff_jucator, nume_antrenor, adresa_antrenor, nume_medic, nume_preparator_fizic)
+values (1, 'Vaxy', 'Crizantemelor 23A', 'Kowalski', 'Gigi'),
+	   (2, 'Jurgen', 'Muncii 43', 'Moga', 'Eusten'),
+       (3, 'Constantinovic', 'Lacului 432', 'Leontescu', 'Lucianovic'),
+       (4, 'Papadopoulus', '23 Decembrie', 'Galinescu', 'Andreas'),
+       (5, 'Nacho', 'Fabricii 876', 'Adrian_Edgar_Douglas', 'Neubert'),
+       (6, 'Cahill', 'Tazlaului 54', 'Stewart', 'Ortega'),
+       (7, 'Groeneveld', 'Plantelor 98', 'Albers', 'Heredia'),
+       (8, 'Ionita', 'Pictorilor 11', 'Ludwig', 'Paganini'),
+       (9, 'Andre_Agassi', 'Florilor 43', 'Hans', 'Panichi'),
+       (10, 'Boris_Becker', 'Oituz 57', 'Assaky', 'Green');
+
+
+insert into organizator_turneu (id_organizator_turneu, id_staff, nume_organizator, prenume_organizator, adresa)
+values (1, 1, 'Tiriac', 'Ion', 'Plantelor_nr_2'),
+	   (2, 2, 'Nastase', 'Ilie', 'Plopilor_nr_23'),
+       (3, 3, 'Abramovich', 'Roman', 'Lalalelor_nr_63'),
+       (4, 4, 'Gates', 'Bill', 'Lucratorilor_nr_54'),
+       (5, 5, 'Arnault', 'Bernard', 'Rozelor 87'),
+       (6, 6, 'Zuckerberg', 'Mark', 'Narciselor 123'),
+       (7, 7, 'Ellison', 'Larry', 'Bradului 56'),
+       (8, 8, 'Brin', 'Sergey', 'Izvorului 43'),
+       (9, 9, 'Bloomberg', 'Michael', 'Castanilor 123'),
+       (10, 10, 'Walton', 'Jim', 'Stejarului 2');
+       
+
+insert into turneu (id_turneu, id_organizator_turneuuu, nume_turneu, adresa_turneu, 
+					   data_incepere, data_terminare, runda, bani_castigati)
+values (1, 1, 'Australian Open', 'Melbourne', '2020.01.20' , '2002.02.02', 7, '4100000'),  ## dolari
+	   (2, 2, 'Roland Garros', 'Paris', '2020.05.26' , '2020.06.09', 7, '2300000'),   ## euro
+       (3, 3, 'Wimbledon', 'Londra', '2020.07.01' , '2020.07.14', 7, '2350000'),  ## lire
+       (4, 4, 'US Open', 'New York', '2020.08.26' , '2020.09.08', 7, '3850000'),  ## dolari
+       (5, 5, 'Indian Weels', 'Indian Wells Tennis Garden', '2019.03.04', '2019.03.17', 8, 9035428), ## dolari
+       (6, 6, 'Miami Open', 'Miami', '2019.03.18', '2019.03.31', 8, 16718910), ## dolari
+       (7, 7, 'Rogers Cup', 'Montreal/Toronto', '2019.08.05', '2019.08.11', 8, '5701945'), ## dolari
+       (8, 8, 'Cincinnati', 'Mason', '2019.08.12', '2019.08.18', 8, '6056280'), ## dolari
+       (9, 9, 'Shanghai Masters', 'Shanghai', '2019.09.09', '2019.09.15', 8, 7473620),
+       (10, 10, 'BNP Paribas Masters', 'Paris', '2020.11.02', '2020.11.08', 8, 5207405);
+       
+
+
+insert into lista_sponsori (id_sponsor, nume_sponsor, telefon_sponsor, adresa_sponsor)
+values (1, 'Tiriac', 0712345678, 'Pomilor_nr_321'),
+	   (2, 'Nastase', 0709876543, 'Fabricii_nr_43'),
+       (3, 'Abramovich', 0756789032, 'Crizantemelor_nr_312'),
+       (4, 'Gates', 0724315488, 'Izvorului_nr_765'),
+       (5, 'Buffet', 0734562143, 'I.L.Caragiale 11'),
+       (6, 'Walton', 0754365476, 'Eroilor 654'),
+       (7, 'Koch', 0700123543, 'Morii 34'),
+       (8, 'Page', 0775457395, 'Decebal 76'),
+       (9, 'Ellison', 0765462853, 'Pacii 30'),
+       (10, 'Simons', 0735456578, 'Tineretului 654');
+       
+       
+insert into sponsor_turneu_actual (id_sponsor_actual, id_turneu_actual)
+values (1, 1),
+	   (2, 2),
+       (3, 3),
+       (4, 4),
+       (5, 5),
+       (6, 6),
+       (7, 7),
+       (8, 8),
+       (9, 9),
+       (10, 10);
+       
+
+insert into jucator (id_jucator, id_staffff, nume_jucator, prenume_jucator, adresa_jucator, 
+						pozitie_in_clasament, telefon, e_mail_adress)
+values (1, 1, 'Nadal', 'Rafael', 'Porto_Cristo' , 1, 0722222222, 'nadalraf1986@yahoo.com'),
+	   (2, 2, 'Djokovic', 'Novak', 'Monte Carlo' , 2, 0733333333, 'djok1987@yahoo.com'),
+       (3, 3, 'Federer', 'Roger', 'Bottmingen' , 3, 0711111111, 'roger1981@yahoo.com'),
+       (4, 4, 'Thiem', 'Dominic', 'Lichtenwörth' , 4, 0744444444, 'thiem2000@yahoo.com'),
+       (5, 5, 'Medvedev', 'Daniil', 'Monte Carlo', 5, 0755555555, 'medvedev@gmail.com'),
+       (6, 6, 'Tsitsipas', 'Stefanos', 'Monte Carlo', 6, 0766666666, 'tsitsipas@gmail.com'),
+       (7, 7, 'Zverev', 'Alexander', 'Monte Carlo', 7, 0777777777, 'zverev@gmail.com'),
+       (8, 8, 'Berrettini', 'Mateo', 'Roma', 8, 0788888888, 'berrettini@hmail.com'),
+       (9, 9, 'Monfils', 'Gael', 'Trelex', 9, 0799999999, 'monfils@gmail.com'),
+       (10, 10, 'Bautista Agut', 'Roberto', 'Castellon de la Plana', 10, 0710101010, 'bautista_agut@gmail.com');
+       
+       
+insert into participare_jucator_turneu (id_turneuuu, id_jucatorrr, rezultat_final)
+values (1, 1, 'Victorie'),
+	   (2, 2, 'Infrangere'),
+       (3, 3, 'Victorie'),
+       (4, 4, 'Victorie'),
+       (5, 5, 'Infrangere'),
+       (6, 6, 'Victorie'),
+       (7, 7, 'Infrangere'),
+       (8, 8, 'Infrangere'),
+       (9, 9, 'Victorie'),
+       (10, 10, 'Victorie');
+       
+
+insert into matchh (id_jucator_2, id_jucator_1, durata_match, nr_spectatori, locatie_match)
+values (1, 1, 4, 50000, 'Melbourne_Australia'),
+	   (2, 2, 6, 35000, 'Paris_Franta'),
+       (3, 3, 3, 100000 , 'Londra_Anglia'),
+       (4, 4, 5, 70000, 'New_York_USA'),
+       (5, 5, 3, 53534, 'Montreal'),
+       (6, 6, 2, 65432, 'Paris'),
+       (7, 7, 1, 30000, 'Indian Weels'),
+       (8, 8, 3, 40000, 'Toronto'),
+       (9, 9, 2, 50000, 'Miami'),
+       (10, 10, 2, 30000, 'Shanghai');
+
+
+##########################################################################
+##########################################################################
+
+
+## 1) Detalii despre staff-ul care are id=3
+select * from staff_jucator where id_staff_jucator=3;
+## 2) Detalii despre organizatorul turneului care are numele Titiac
+select * from organizator_turneu where organizator_turneu.nume_organizator = 'Tiriac';
+## 3) Detalii despre turneul numit Australian Open
+select * from turneu where nume_turneu = 'Australian Open';
+## 4) Detalii despre sponsorul cu numele Gates
+select * from lista_sponsori where nume_sponsor = 'Gates';
+## 5) Suma de bani de la Wimbledon
+select sum(bani_castigati) from turneu where nume_turneu='Wimbledon';
+## 6) Numele jucatorilor care sunt pe locurile 1, 2 si 3 in clasament
+select nume_jucator from jucator where pozitie_in_clasament <=3;
+## 7) Numele jucatorilor care au infrangere 
+select nume_jucator from participare_jucator_turneu, jucator where rezultat_final='Infrangere'
+			and id_jucator = id_jucatorrr;
+## 8) Locatiile turneelor care au mai mult de 40000 de spectatori
+select locatie_match from matchh where nr_spectatori>40000;
+## 9) Lista jucatorilo care au victorie
+select nume_jucator from participare_jucator_turneu, jucator where rezultat_final='Victorie'
+			and id_jucator = id_jucatorrr;
+## 10) Numele persoanei care are nr de telefon 0756789032
+select nume_sponsor from lista_sponsori where telefon_sponsor = 0756789032;
+## 11) Numele Jucatorilor care au 'e' in interiorul numelui
+select nume_jucator from jucator where nume_jucator like '%e%';
+## 12) Suma totala de bani de la toate turneele
+select sum(bani_castigati) from turneu;
+## 13) Nr de telefon al jucatoruli al carui nume se termina cu 'l'
+select telefon from jucator where nume_jucator like '%l';
+## 14) Numele turneelor care au datele coresp
+select nume_turneu from turneu where data_incepere='2019.03.18';
+## 15) Locuinta jucatorului cu adresa 'roger1981@yahoo.com'
+select adresa_jucator from jucator where e_mail_adress = 'roger1981@yahoo.com';
+## 16) Numele jucatorilor care au 'e' in interiorul numelui de familie
+select nume_jucator from jucator where nume_jucator like '%e%';
+## 17) Id-ul, numele, prenumele si adresa jucatorilor care nu locuiesc in Monte Carlo
+select id_jucator as ID_JUCATOR, nume_jucator as NUME_JUCATOR, prenume_jucator as PRENUME_JUCATOR,
+     adresa_jucator as LOCUINTA_JUCATOR from jucator where adresa_jucator<> 'Monte Carlo';
+
+##########################################################
+##########################################################
+
+
+#Trigger 1
+DROP TRIGGER IF EXISTS insert_staff_jucator;
+delimiter //
+CREATE TRIGGER insert_staff_jucator
+before insert ON staff_jucator FOR EACH ROW
+BEGIN
+	set new.id_staff_jucator = 100,
+    new.nume_antrenor = 'Jhhhhhh',
+    new.adresa_antrenor = 'New York 321',
+    new.nume_medic = 'Johnson',
+    new.nume_preparator_fizic = 'Adelson';
+
+END //
+DELIMITER ;
+
+insert into staff_jucator (id_staff_jucator, nume_antrenor, adresa_antrenor,
+								nume_medic, nume_preparator_fizic)
+values (1, 'sdfds', 'Crizantemelor 23A', 'Kowalski', 'Gigi');
+
+select * from staff_jucator;
+
+
+
+
+#Trigger 2
+DROP TRIGGER IF EXISTS insert_organizator_turneu;
+delimiter //
+CREATE TRIGGER insert_organizator_turneu
+before insert ON organizator_turneu FOR EACH ROW
+BEGIN
+	set new.id_organizator_turneu = 100,
+    new.id_staff = new.id_staff,
+    new.nume_organizator = 'Tadel',
+    new.prenume_organizator = 'Zizi',
+    new.adresa = 'Patrascanu 5000';
+
+END //
+DELIMITER ;
+
+insert into organizator_turneu (id_organizator_turneu, id_staff, nume_organizator, 
+									prenume_organizator, adresa)
+values (100, 100, 'Tiriac', 'Ion', 'Plantelor_nr_2');
+
+select * from organizator_turneu;
+
+
+
+
+
+#Trigger 3
+DROP TRIGGER IF EXISTS insert_turneu;
+delimiter //
+CREATE TRIGGER insert_turneu
+before insert ON turneu FOR EACH ROW
+BEGIN
+    set new.id_turneu = 100,
+    new.id_organizator_turneuuu = 100,
+    new.nume_turneu = 'Tadel',
+    new.adresa_turneu = 'Nicolai_Costin 43',
+    new.data_incepere = '12.12.2020',
+    new.data_terminare = '19.12.2020',
+    new.runda = 1,
+    new.bani_castigati = '5000';
+
+END //
+DELIMITER ;
+
+insert into turneu (id_turneu, id_organizator_turneuuu, nume_turneu, adresa_turneu, 
+					   data_incepere, data_terminare, runda, bani_castigati)
+values (100, 100, 'Australian Open', 'Melbourne', '20.01.2020' , '02.02.2020', 7, '4100000');  ## dolari
+
+select * from turneu;
+
+
+
+
+#Trigger 4
+DROP TRIGGER IF EXISTS insert_lista_sponsori;
+delimiter //
+CREATE TRIGGER insert_lista_sponsori
+before insert ON lista_sponsori FOR EACH ROW
+BEGIN
+    set new.id_sponsor = 100,
+    new.nume_sponsor = 'Iudean',
+    new.telefon_sponsor = '0799999999',
+    new.adresa_sponsor = 'Nationalei 76';
+
+END //
+DELIMITER ;
+
+insert into lista_sponsori (id_sponsor, nume_sponsor, telefon_sponsor, adresa_sponsor)
+values (1, 'Tiriac', 0712345678, 'Pomilor_nr_321');
+
+select * from lista_sponsori;
+
+##########################################################################
+##########################################################################
+
+
+
+## Procedura 1
+DROP PROCEDURE IF EXISTS ACTUALIZARE_turneu_perioada;
+DELIMITER //
+CREATE PROCEDURE ACTUALIZARE_turneu_perioada ( iddd int, numeee varchar(50), data_incep_noua date, data_sfarsit_noua date )   
+ BEGIN
+    START TRANSACTION;
+     SET @ID_D = NULL, @VAL = NULL, @ID_TIP = NULL;
+       SELECT @ID_D := id_organizator_turneu FROM organizator_turneu WHERE id_organizator_turneu=iddd;
+       #SELECT @VAL := nr_spectatori FROM matchh WHERE id_jucator_2 = @ID_D;
+       SELECT @ID_TIP := id_turneu FROM turneu WHERE id_turneu = @ID_D;
+
+       IF(@ID_D IS NOT NULL) THEN 	
+	 BEGIN
+		set @dt_incep := data_incep_noua;
+        set @dt_sf := data_sfarsit_noua;
+        set @numee := numeee;
+		##SELECT @adr_turneu:= adresa_turneu FROM turneu WHERE adresa_turneu = 'Aeroportului 50';
+        SELECT @ID_D AS id, @numee AS NUME_ORGANIZATOR, @dt_incep  AS DATA_INCEPERE_TURNEU,
+               @dt_sf AS DATA_TERMINARE_TURNEU ;
+			
+	   COMMIT;
+         END;
+	ELSE ROLLBACK;
+    	END IF;
+  END //
+DELIMITER ;
+
+call ACTUALIZARE_turneu_perioada ( 1, 'Roland Garros',  '2020.02.12', '2020.03.02');
+
+
+
+## Procedura 2
+DROP PROCEDURE IF EXISTS ACTUALIZARE_bani;
+DELIMITER //
+CREATE PROCEDURE ACTUALIZARE_bani ( numeee varchar(50), bani_nou int)   
+  BEGIN
+    START TRANSACTION;
+       SET @ID_D = NULL, @VAL = NULL, @ID_TIP = NULL;
+       SELECT @ID_D := id_organizator_turneu FROM organizator_turneu WHERE nume_organizator=numeee;
+       #SELECT @VAL := nr_spectatori FROM matchh WHERE id_jucator_2 = @ID_D;
+       SELECT @ID_TIP := id_turneu FROM turneu WHERE id_turneu = @ID_D;
+
+       IF(@ID_D IS NOT NULL) THEN 	
+	 BEGIN
+		set @bani := bani_nou;
+        set @numee := numeee;
+		##SELECT @bani:= sum(bani_castigati) FROM turneu WHERE bani_castigati='4100000';
+        SELECT @ID_D AS id, @numee AS NUME_ORGANIZATOR, @bani  AS Balanta;
+			
+	   COMMIT;
+         END;
+	ELSE ROLLBACK;
+    	END IF;
+  END //
+DELIMITER ;
+
+call ACTUALIZARE_bani ( 'Tiriac', 90000);
+
+
+
+
+
+## Procedura 3
+DROP PROCEDURE IF EXISTS ACTUALIZARE_adresa_turneu;
+DELIMITER //
+CREATE PROCEDURE ACTUALIZARE_adresa_turneu ( numeee varchar(50), adresa_turneu_noua varchar(50) )   
+  BEGIN
+    START TRANSACTION;
+       SET @ID_D = NULL, @VAL = NULL, @ID_TIP = NULL;
+       SELECT @ID_D := id_organizator_turneu FROM organizator_turneu WHERE nume_organizator=numeee;
+       #SELECT @VAL := nr_spectatori FROM matchh WHERE id_jucator_2 = @ID_D;
+       SELECT @ID_TIP := id_turneu FROM turneu WHERE id_turneu = @ID_D;
+
+       IF(@ID_D IS NOT NULL) THEN 	
+	 BEGIN
+		set @adr_turneu := adresa_turneu_noua;
+        set @numee := numeee;
+		##SELECT @adr_turneu:= adresa_turneu FROM turneu WHERE adresa_turneu = 'Aeroportului 50';
+        SELECT @ID_D AS id, @numee AS NUME_ORGANIZATOR, @adr_turneu  AS ADRESA_TURNEU;
+			
+	   COMMIT;
+         END;
+	ELSE ROLLBACK;
+    	END IF;
+  END //
+DELIMITER ;
+
+call ACTUALIZARE_adresa_turneu ( 'Tiriac', 'Aeroportului 50');
+
+
+
+
+
+
+
+
+## Procedura 4
+DROP PROCEDURE IF EXISTS ACTUALIZARE_e_mail_jucator;
+DELIMITER //
+CREATE PROCEDURE ACTUALIZARE_e_mail_jucator ( iddd int, numeee varchar(50), e_mail_jucator_noua varchar(50) )   
+  BEGIN
+    START TRANSACTION;
+       SET @ID_D = NULL, @VAL = NULL, @ID_TIP = NULL;
+       SELECT @ID_D := id_jucatorrr FROM participare_jucator_turneu WHERE id_jucatorrr = iddd;
+       #SELECT @VAL := nr_spectatori FROM matchh WHERE id_jucator_2 = @ID_D;
+       SELECT @ID_TIP := id_jucator FROM jucator WHERE id_jucator = iddd;
+
+       IF(@ID_D IS NOT NULL) THEN 	
+	 BEGIN
+		set @adr_e_mail := e_mail_jucator_noua;
+        set @numee := numeee;
+		##SELECT @adr_turneu:= adresa_turneu FROM turneu WHERE adresa_turneu = 'Aeroportului 50';
+        SELECT @ID_D AS ID, @numee AS NUME, @adr_e_mail  AS ADRESA_E_MAIL;
+			
+	   COMMIT;
+         END;
+	ELSE ROLLBACK;
+    	END IF;
+  END //
+DELIMITER ;
+
+call ACTUALIZARE_e_mail_jucator ( 3, 'Djokovic', 'dominic1993@gmail.com');
+
+
+
+
+
+
+
+## Procedura 5
+DROP PROCEDURE IF EXISTS ACTUALIZARE_telefon_jucator;
+DELIMITER //
+CREATE PROCEDURE ACTUALIZARE_telefon_jucator ( iddd int, numeee varchar(50), telefon_nou int )   
+  BEGIN
+    START TRANSACTION;
+       SET @ID_D = NULL, @VAL = NULL, @ID_TIP = NULL;
+       SELECT @ID_D := id_jucatorrr FROM participare_jucator_turneu WHERE id_jucatorrr = iddd;
+       #SELECT @VAL_NUME := nume_jucator FROM jucator WHERE id_jucator = @ID_D;
+       SELECT @ID_TIP := id_jucator FROM jucator WHERE id_jucator = @ID_D;
+
+       IF(@ID_D IS NOT NULL) THEN 	
+	 BEGIN
+		set @telef := telefon_nou;
+        set @numee := numeee;
+		##SELECT @adr_turneu:= adresa_turneu FROM turneu WHERE adresa_turneu = 'Aeroportului 50';
+        SELECT @ID_D AS ID, @numee AS NUME, @telef  AS TELEFON;
+			
+	   COMMIT;
+         END;
+	ELSE ROLLBACK;
+    	END IF;
+  END //
+DELIMITER ;
+
+call ACTUALIZARE_telefon_jucator ( 3, 'Thiem', 0758032894);
+
+
+
+
+
+
+
+## Procedura 6
+DROP PROCEDURE IF EXISTS ACTUALIZARE_pozitie_jucator;
+DELIMITER //
+CREATE PROCEDURE ACTUALIZARE_pozitie_jucator ( iddd int, numeee varchar(50), poz_noua int)   
+  BEGIN
+    START TRANSACTION;
+       SET @ID_D = NULL, @VAL = NULL, @ID_TIP = NULL;
+       SELECT @ID_D := id_jucatorrr FROM participare_jucator_turneu WHERE id_jucatorrr = iddd;
+       SELECT @VAL := pozitie_in_clasament FROM jucator WHERE id_jucator = @ID_D;
+       SELECT @ID_TIP := nume_jucator FROM jucator WHERE pozitie_in_clasament = 4;
+
+       IF(@ID_D IS NOT NULL) THEN 	
+	 BEGIN
+        set @pozz := poz_noua;
+        set @numee := numeee;
+        SELECT @ID_D AS id, @numee AS NUME, @pozz AS POZ;
+			
+	   COMMIT;
+         END;
+	ELSE ROLLBACK;
+    	END IF;
+  END //
+DELIMITER ;
+
+call ACTUALIZARE_pozitie_jucator ( 4, 'Thiem', 3);
+
+
+
+
+####################################################################
+####################################################################
+
+# Vedere 1
+drop view if exists vedere_organizator_turneu_staff_jucator;
+CREATE VIEW vedere_organizator_turneu_staff_jucator AS
+SELECT organizator_turneu.nume_organizator As NUME_ORGANIZATOR, 
+	organizator_turneu.prenume_organizator as PRENUME_ORGANIZATOR, 
+    id_organizator_turneu As ID_ORGANIZ_TURNEU, staff_jucator.nume_antrenor 
+    As NUME_ANTRENOR, staff_jucator.nume_medic as NUME_MEDIC
+    FROM organizator_turneu, staff_jucator WHERE organizator_turneu.id_staff = 
+    staff_jucator.id_staff_jucator and staff_jucator.nume_medic = 'Kowalski';
+
+select * from vedere_organizator_turneu_staff_jucator;
+
+
+# Vedere 2
+drop view if exists vedere_organizator_turneu_si_turneu;
+CREATE VIEW vedere_organizator_turneu_si_turneu AS
+SELECT organizator_turneu.nume_organizator As NUME_ORGANIZATOR, 
+	organizator_turneu.prenume_organizator as PRENUME_ORGANIZATOR, 
+    id_organizator_turneu As ID_ORGANIZ_TURNEU, turneu.nume_turneu 
+    As NUME_TURNEU, turneu.adresa_turneu as ADRESA_TURNEU
+    FROM organizator_turneu, turneu WHERE organizator_turneu.id_staff = 
+    turneu.id_organizator_turneuuu and turneu.nume_turneu = 'Australian Open';
+    
+select * from vedere_organizator_turneu_si_turneu;
+
+
+
+# Vedere 3
+drop view if exists vedere_jucator_si_staff_jucator;
+CREATE VIEW vedere_jucator_si_staff_jucator AS
+SELECT jucator.nume_jucator As NUME_JUCATOR, jucator.prenume_jucator 
+as PRENUME_ORGANIZATOR, jucator.pozitie_in_clasament as POZ_IN_CLASAMENT, 
+    id_jucator As ID_JUCATOR, staff_jucator.nume_antrenor As NUME_ANTRENOR, 
+    staff_jucator.nume_preparator_fizic as PREPARATOR_FIZIC FROM jucator, 
+    staff_jucator WHERE jucator.id_jucator=staff_jucator.id_staff_jucator ;
+    ##and staff_jucator.nume_preparator_fizic = 'Lucianovic';
+    
+select * from vedere_jucator_si_staff_jucator;
+
+
+####################################################################
+####################################################################
+
+
+DROP USER 'client'@'localhost';
+CREATE USER 'client'@'localhost';
+GRANT SELECT ON tenis.* TO 'client'@'localhost';
+GRANT INSERT ON tenis.* TO 'client'@'localhost';
+GRANT UPDATE ON tenis.* TO 'client'@'localhost';
+GRANT DELETE ON tenis.* TO 'client'@'localhost';
+GRANT SHOW VIEW ON tenis.* TO 'client'@'localhost';
+GRANT ALL PRIVILEGES ON tenis.* TO 'client'@'localhost' WITH GRANT OPTION;
+
+
+
+
+
+
+
+
+
+

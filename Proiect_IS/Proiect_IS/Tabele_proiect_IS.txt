@@ -1,0 +1,104 @@
+
+
+drop database if exists Magazin_roboti;
+create database if not exists Magazin_roboti;
+use Magazin_roboti;
+
+select distinct user from mysql.user;
+
+create table if not exists Magazin
+(cod int not null primary key,
+nume_magazin varchar(50),
+administrator varchar(100)
+);
+
+insert into Magazin values(10,"Robo_Shop","Bioeniuk Matt");
+select *  from Magazin;
+
+create table if not exists Administrator(
+	admin_id int not null primary key auto_increment,
+    cod_magazin int,
+    administrator_nume varchar(50),
+	administrator_prenume varchar(50),
+    adresa VARCHAR(50) NULL,
+	e_mail VARCHAR(50) NULL,
+    parola varchar(50) NULL,
+    foreign key(cod_magazin) references Magazin(cod)
+);
+
+insert into Administrator values 
+(1, 10, "Nechifor", "Constantin", "Trandafirilor, nr 2", "nechiforconstantin@gmail.com", "Cine_s_ar_fi_gandit_la_asta?"),
+(2, 10, "Miclaus", "Anton", "Lalelelor, nr 3", "miclausanton@gmail.com", "Parola_contine_cifra_7"),
+(3, 10, "Paraschiv", "Claudiu", "Crinilor, nr 7", "paraschivclaudiu@gmail.com", "Parola_este_cnp_ul_meu");
+
+create table if not exists Produs
+(
+	cod int not null primary key auto_increment,
+    cod_magazin int ,
+    nume_produs varchar(50),
+    material_produs varchar (50),
+    culoare_produs varchar(50),
+    pret_produs float,
+    numar_bucati int,
+    foreign key(cod_magazin) references Magazin(cod)
+);
+
+insert into Produs values
+(1,10,"bratul_de_mixare", "aluminiu", "alb",300, 500),
+(2,10,"Picioruse", "cauciuc", "negru", 200, 300),
+(3,10,"cutit_masina_de_tocat", "fier", "gri", 29.75, 1000),
+(4, 10, "robot_inteligent_AKU_Smart", "negru_si_gri", "plastic", 179, 100),
+(5, 10, "robot_inteligent_interactiv_PNI", "galben_si_negru", "plastic", 95, 110),
+(6, 10, "robot_de_bucatarie_BOSCH_Multitalent_8", "alb", "cupru", 682.4, 80),
+(7, 10, "robot_mini_sumo", "negru_si_transparent", "plastic", 99, 400),
+(8, 10, "brat_robotic", "albastru", "fier", 399, 170),
+(9, 10, "mixer_pentru_bucatarie", "gri", "aluminiu", 79, 650),
+(10, 10, "melc_de_bucatarie", "gri", "aluminiu", 58.3, 700);
+
+
+select * from Produs where cod_magazin=10;
+
+create table if not exists Client
+(
+	cod int not null primary key auto_increment,
+    cod_magazin int,
+    nume_client varchar(50),
+    prenume_client varchar(50),
+    CNP varchar(15),
+    stare_civila varchar(50),
+    adresa varchar(50),
+    e_mail varchar(50),
+    coment varchar(1000),
+    foreign key(cod_magazin) references Magazin(cod)
+);
+
+insert into Client values
+(1,10,"Popa","Andrei","1970926261693","Necasatorit", "Bulevardul muncii, nr 87", "popaandrei@gmail.com",
+	"Sunt multumit"),
+(2,10,"Popescu","Maria","1870110261695","Casatorita", "Aprodul purice, nr 57", "popescumaria@gmail.com",
+	"Este un produs foarte bun"),
+(3,10,"Pop","Constantin","1700325261689","Casatorit","21 Decembrie, nr 76","popconstantin@gmail.com",
+	"Raportul pret calitate foarte bun"),
+(4, 10, "Radu", "David", "1980101011693", "Necasatorit", "Mihai Eminescu, nr 4", "radudavid@gmail.com",
+	""),
+(5, 10, "Ionescu", "Andreea", "1800202027596", "Casatorita", "Tudor Vladimirescu, nr 65", "ionescuandreea@gmail.com",
+	"Cumpar pentru prima data de la acest magazin. Sper sa fie bine"),
+(6, 10, "Dumitru", "Alexandru", "1600303031278", "Casatorit", "Nicolae Balcescu, nr 46", "dumitrualexandru@gmail.com",
+	"E un magazin de incredere"),
+(7, 10, "Stoica", "Elena", "1750404041699", "Casatorita", "Primaverii, nr 50", "stoicaelena@gmail.com",
+	"Sunt multumita"),
+(8, 10, "Stan", "Gabriel", "1890505051692", "Casatorit", "Libertatii, nr 65", "stangabriel@gmail.com",
+	""),
+(9, 10, "Munteanu", "Ioana", "1960606063294", "Necasatorita", "Garii, nr 42", "munteanuioana@gmail.com",
+	"Arata bine, dar functioneaza si mai bine"),
+(10, 10, "Matei", "Stefan", "1900707071655", "Casatorit", "Florilor, nr 32", "mateistefan@gmail.com", 
+	""),
+(11, 10, "Moldovan", "Ana", "1780808081736", "Casatorita", "Avram Iancu, nr 76", "moldovanana@gmail.com",
+	"Ma asteptam la mai mult"),
+(12, 10, "Ciobanu", "Ionut", "1690909091431", "Casatorit", "Unirii, nr 68", "ciobanuionut@gmail.com",
+	"Voi mai cumpara si cu alta ocazie");
+
+select* from client where client.cod_magazin=10;
+
+#select * from client where client.nume_client="aaa";
+
