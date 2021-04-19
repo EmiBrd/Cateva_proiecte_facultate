@@ -1,0 +1,22 @@
+
+In imaginea cu titlul "schema" este schema procesorului pipeline.
+In imaginile cu titlurile "cod_1" si "cod_2" se afla programul
+in Assembly scris de mana.
+
+In programul meu, am identificat 2 tiuri de hazarduri (structurale si de control).
+Hazardurile structurale apar atunci cand doua instructiuni incearca sa foloseasca simultan o componenta din procesor, dar in scopuri diferite.
+
+Hazarduri structurale apar intre:
+1) and $2, $1, $4 si add $3, $0, $2;
+2) addi $5, $0, 1 si etich4: beq $1, $0, 25
+3) srl $1, $1, 1 si beq $3, $2, 23
+
+
+Hazardurile de control apar la instructiuni de salt unde instructiunile, care
+urmeaza dupa instructiunea de salt, intra implicit in executie. 
+
+Hazarduri de control apar intre:
+1) beq $1, $0, 5 si and $2, $1, $4;
+2) j 16 si etich1: bne $5, $6, 33;
+3) bne $5, $6, 33 si j 34;
+4) j 34 si inegalit: addi $5, $0, 4

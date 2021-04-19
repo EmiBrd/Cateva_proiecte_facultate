@@ -1,0 +1,999 @@
+		  		
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+	   
+entity MPG is
+    Port ( en : out STD_LOGIC;
+           input : in STD_LOGIC;
+           clock : in STD_LOGIC);
+end MPG;
+
+architecture arh_MPG of MPG is
+
+signal count:std_logic_vector(31 downto 0):=x"00000000";
+signal Q1:std_logic;
+signal Q2:std_logic;
+signal Q3:std_logic;
+begin
+	en<=Q2 and (not Q3);
+	
+	process(clock)
+		begin
+		if rising_edge( clock ) then
+			count<=count+1;
+		end if;
+	end process;
+	
+	process(clock)
+	begin 
+		if rising_edge(clock) then
+			if count(15 downto 0)="1111111111111111" then
+				Q1<=input;
+			end if;
+		end if;
+	end process; 
+	
+	process(clock)
+	begin 
+		if clock'event and clock='1' then
+			Q2<=Q1;
+			Q3<=Q2;
+		end if;
+	end process;
+
+end arh_MPG;
+-----------------------------------------------------------------
+
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity SSD is
+    Port ( clk : in STD_LOGIC;
+           d0 : in STD_LOGIC_VECTOR (3 downto 0);
+           d1 : in STD_LOGIC_VECTOR (3 downto 0);
+           d2 : in STD_LOGIC_VECTOR (3 downto 0);
+           d3 : in STD_LOGIC_VECTOR (3 downto 0);
+           an : out STD_LOGIC_VECTOR (3 downto 0);
+           cat : out STD_LOGIC_VECTOR (6 downto 0));
+end SSD;
+
+architecture arh_SSD of SSD is
+
+signal temp: std_logic_vector (15 downto 0 ):= x"0000";
+signal Q_MUX: std_logic_vector (3 downto 0) := "0000";
+begin
+    process(clk)
+        begin
+        if rising_edge(clk) then
+            temp <= temp + 1;
+        end if;
+    end process;
+    
+    process(temp)
+        begin
+        case temp(15 downto 14) is
+            when "00" => Q_MUX <= d0;
+            when "01" => Q_MUX <= d1;
+            when "10" => Q_MUX <= d2;
+            when others => Q_MUX <= d3;
+            end case;
+    end process;
+    
+     with Q_MUX select
+      cat <="1111001" when "0001",   --1
+            "0100100" when "0010",   --2
+            "0110000" when "0011",   --3
+            "0011001" when "0100",   --4
+            "0010010" when "0101",   --5
+            "0000010" when "0110",   --6
+            "1111000" when "0111",   --7
+            "0000000" when "1000",   --8
+            "0010000" when "1001",   --9
+            "0001000" when "1010",   --A
+            "0000011" when "1011",   --b
+            "1000110" when "1100",   --C
+            "0100001" when "1101",   --d
+            "0000110" when "1110",   --E
+            "0001110" when "1111",   --F
+            "1000000" when others;   --0
+
+    process(temp)
+        begin
+        case temp(15 downto 14) is
+            when "00" => an <= "1110";
+            when "01" => an <= "1101";
+            when "10" => an <= "1011";
+            when others => an <= "0111";
+            end case;
+    end process;
+end arh_SSD;
+----------------------------------------------------
+
+----------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity Instruction_Fetch is
+    Port ( clk : in STD_LOGIC;
+           reset : in STD_LOGIC;
+           en : in STD_LOGIC;	 
+		   jump_adress : in STD_LOGIC_VECTOR (15 downto 0);	
+           branch_adress : in STD_LOGIC_VECTOR (15 downto 0);           
+		   jump : in STD_LOGIC;
+           pcsrc : in STD_LOGIC;
+           instruction : out STD_LOGIC_VECTOR (15 downto 0);
+           next_instruction : out STD_LOGIC_VECTOR (15 downto 0));
+end Instruction_Fetch;
+
+architecture Instruction_Fetch_arh of Instruction_Fetch is
+
+type memorie is array (0 to 255) of std_logic_vector (15 downto 0);
+
+--- Legenda : 
+--- $zero => $0
+--- $t1 => $1
+--- $s1 => $2
+--- $s3 => $3
+--- $s4 => $4
+--- $k0 => $5
+--- $k1 => $6
+
+signal memmory: memorie := (
+B"001_000_110_0000100", 	-- addi $k1, $0, 4	  							--1
+B"001_000_100_0000001", 	-- addi $s4, $0, 1								--2
+B"000_001_000_0000101", 	-- addi $t1, $0, 5							   	--3
+B"100_000_001_0010001",		-- beq $t1, $0, etich1    etich = 17	   		--4
+B"000_001_100_010_0_100",	-- and $s1, $t1, $s4						   	--5
+B"000_000_010_011_0_000",	-- add $s3, $0, $s1							   	--6
+B"000_001_000_001_1_000",	-- srl $t1, $t1, 1							   	--7
+B"001_000_101_0000001",		-- addi $k0, $0, 1							--8
+B"100_000_001_0010000",		-- etich4:	beq $t1, $0, etich3=16			   	--9
+B"000_001_100_010_0_100",	-- and $s1, $t1, $s4						   	--10
+B"000_001_000_001_1_000", 	-- srl $t1, $t1, 1							   	--11
+B"100_010_011_0001110",		-- beq $s3, $s1, x_egal_y=14				 	--12
+B"000_101_100_101_0_000",	-- add $k0, $k0, $s4						   	--13
+B"000_000_010_011_0_000",	-- x_egal_y: add, $s3, $0, $s1			   	--14
+B"111_0000000001001",		-- j etich4									  	--15
+B"101_110_101_0010101",		-- bne $k0, $k1, inegalit=21				  	--18
+B"001_000_101_1000000",		-- addi $k0, $0, 64							--19
+B"111_0000000010110",		-- j equale=22								   	--20
+B"001_000_101_0000100",		-- inegalit: addi $k0, $0, 4					--21
+
+others => x"FFFF"  );	
+
+signal pcc:STD_LOGIC_VECTOR(15 downto 0):=x"0000";
+signal pcc1:STD_LOGIC_VECTOR(15 downto 0):=x"0000";
+signal mm1:STD_LOGIC_VECTOR(15 downto 0):=x"0000";
+
+begin
+    process(clk, reset, en)
+    begin
+    if reset = '1' then 
+        pcc <= x"0000";
+        elsif en='1' and rising_edge(clk) 
+        then pcc <= pcc1;
+    end if;
+end process;
+
+instruction <= memmory(conv_integer(pcc(7 downto 0) ) );
+next_instruction <= pcc+1;
+mm1 <= pcc+1 when pcsrc = '0'
+	else branch_adress;
+pcc1<=mm1 when jump = '0' 
+	else jump_adress;
+
+end Instruction_Fetch_arh;
+----------------------------------------------------------
+
+------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity Register_File is
+  Port (clk:in std_logic;
+  	ra1:in std_logic_vector(2 downto 0);
+  	ra2:in std_logic_vector(2 downto 0);
+  	wa:in std_logic_vector(2 downto 0);
+  	wd:in std_logic_vector(15 downto 0);
+  	wen:in std_logic;
+  	rd1, rd2:out std_logic_vector(15 downto 0));
+end Register_File;
+
+architecture Register_File_arh of Register_File is
+
+type rfile is array(0 to 255) of std_logic_vector(15 downto 0);
+signal rff: rfile :=(x"0232", x"0234", x"0236", x"0238", x"0240", 
+		x"0242", x"0244", x"0246", x"0248", x"0250", x"0252",
+		x"0254", x"0256", x"0258", x"0260", others=>x"FFFF");
+
+	begin					  
+	process(clk)
+		begin
+		if rising_edge(clk) then
+			if wen='1' then
+    			rff(conv_integer(wa) ) <= wd;
+			end if;
+		end if;
+	end process; 
+   
+rd1 <= rff(conv_integer(ra1) );
+rd2 <= rff(conv_integer(ra2) );
+
+end Register_File_arh;
+-------------------------------------------------------------------
+
+----------------------------------------------------------------			  
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity Instruction_Decode is
+	Port ( clk: in std_logic;	  
+			Write_Data: in std_logic_vector(15 downto 0);
+			Instruction: in std_logic_vector(15 downto 0);			
+			Ext_Op: in std_logic;  
+			Reg_Dst: in std_logic;	  
+			Reg_Write: in std_logic;		 
+			Ext_Imm : out std_logic_vector(15 downto 0);
+			Read_Data_1: out std_logic_vector(15 downto 0);
+			Read_Data_2: out std_logic_vector(15 downto 0);
+			SA : out std_logic;
+			Functionn : out std_logic_vector(2 downto 0) );		
+end Instruction_Decode;
+
+architecture Instruction_Decode_arh of Instruction_Decode is
+
+component Register_File is
+     Port (clk:in std_logic;
+  		ra1:in std_logic_vector(2 downto 0);
+  		ra2:in std_logic_vector(2 downto 0);
+  		wa:in std_logic_vector(2 downto 0);
+  		wd:in std_logic_vector(15 downto 0);
+  		wen:in std_logic;
+  		rd1, rd2:out std_logic_vector(15 downto 0));
+end component;
+
+signal RA1_semnal, RA2_semnal: std_logic_vector(2 downto 0); 
+signal ExtImm_semnal: std_logic_vector(15 downto 0);
+signal WA_semnal: std_logic_vector(2 downto 0) := "000";
+
+
+begin
+
+----- Sign Extension
+process( Ext_Op, Instruction )   
+begin
+	if (Ext_Op = '0') then
+		ExtImm_semnal <= B"000000000" & Instruction(6 downto 0);
+		
+	else 
+		if (Instruction(6) = '0') then
+			ExtImm_semnal <= B"000000000" & Instruction(6 downto 0);
+		elsif( Instruction(6) = '1' ) then	
+			ExtImm_semnal <= B"111111111" & Instruction(6 downto 0);
+		end if;
+	end if;
+end process;
+
+----- MUXX
+process(Reg_Dst, Instruction)	
+begin	  
+	if(Reg_Dst = '1') then
+		 WA_semnal <= Instruction(6 downto 4); 
+	else 
+		WA_semnal <= Instruction(9 downto 7);
+	end if;
+end process;
+
+RA1_semnal <= Instruction(12 downto 10);		
+RA2_semnal <= Instruction(9 downto 7);
+
+Functionn <= Instruction(2 downto 0);	-- Function ALU
+SA <= Instruction(3);		-- SA
+Ext_Imm <= ExtImm_semnal;		-- Signal Ext
+
+														
+RF: Register_File port map (clk, RA1_semnal, RA2_semnal, WA_semnal, Write_Data, 
+					Reg_Write, Read_Data_1, Read_Data_2);
+
+end Instruction_Decode_arh;
+-----------------------------------------------------------------
+
+ ----------------------------------------------------------- 
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity Unit_Control is
+		Port (Instr: in std_logic_vector(2 downto 0);
+			 Reg_Dst: out std_logic;
+			 Ext_Op: out std_logic;
+			 ALU_Src: out std_logic;
+			 Branch: out std_logic;		   
+			 bne : out std_logic;
+			 Jump: out std_logic;
+			 ALU_Op: out std_logic_vector(2 downto 0);
+			 Mem_Write: out std_logic;
+			 Mem_to_Reg: out std_logic;
+			 Reg_Write: out std_logic);
+end Unit_Control;
+
+
+architecture Unit_Control_arh of Unit_Control is
+begin
+process(Instr)
+begin
+	case (Instr) is 
+		when "000" =>    --- add(+) de tip R
+			Reg_Dst <= '1';
+			Ext_Op <= 'X';
+			ALU_Src <= '0';
+			Branch <= '0';
+			Jump <= '0';
+			ALU_Op <= "000";
+			Mem_Write <= '0';
+			Mem_to_Reg <= '0';
+			Reg_Write <= '1';
+			
+		when "001" =>      -- sub(-) de tip R
+			Reg_Dst <= '0';
+			Ext_Op <= 'X';
+			ALU_Src <= '0';
+			Branch<='0';
+			Jump<='0';
+			ALU_Op<="100";
+			Mem_Write<='0';
+			Mem_to_Reg<='0';
+			Reg_Write<='1';
+			
+		when "010"=> --- or de tip R
+			Reg_Dst <= '1';
+			Ext_Op <= 'X';
+			ALU_Src <= '0';
+			Branch <= '0';
+			Jump <= '0';
+			ALU_Op <= "010";
+			Mem_Write <= '0';
+			Mem_to_Reg <= '0';
+			Reg_Write <= '1';
+			
+		when "011"=> --- and de tip R
+			Reg_Dst <= '1';
+			Ext_Op <= 'X';
+			ALU_Src <= '0';
+			Branch <= '0';
+			Jump <= '0';
+			ALU_Op <= "001";
+			Mem_Write <= '0';
+			Mem_to_Reg <= '0';
+			Reg_Write <= '1';
+			
+		when "100"=> ---- ori
+			Reg_Dst <= '0';
+			Ext_Op <= '0';
+			ALU_Src <= '1';
+			Branch <= '0';
+			Jump <= '0';
+			ALU_Op <= "010";
+			Mem_Write <= '0';
+			Mem_to_Reg <= '0';
+			Reg_Write <= '1';
+			
+		when "101"=> ---addi
+			Reg_Dst <= '0';
+			Ext_Op <= '1';
+			ALU_Src <= '1';
+			Branch <= '0';
+			Jump <= '0';
+			ALU_Op <= "000";
+			Mem_Write <= '0';
+			Mem_to_Reg <= '0';
+			Reg_Write <= '1';
+			
+		when "110"=> ---- lw
+			Reg_Dst <= '0';
+			Ext_Op <= '1';
+			ALU_Src <= '1';
+			Branch <= '0';
+			Jump <= '0';
+			ALU_Op <= "000";
+			Mem_Write <= '0';
+			Mem_to_Reg <= '1';
+			Reg_Write <= '1';
+			
+		when "111"=> ---- sw
+			Reg_Dst <= 'X';
+			Ext_Op <= '1';
+			ALU_Src <= '1';
+			Branch <= '0';
+			Jump <= '0';
+			ALU_Op <= "000";
+			Mem_Write <= '1';
+			Mem_to_Reg <= 'X';
+			Reg_Write <= '0';
+		
+		when others =>	--- and so on
+			Reg_Dst <= 'X';
+			Ext_Op <= 'X';
+			ALU_Src <= 'X';
+			Branch <= 'X';
+			Jump <= '1';
+			ALU_Op <= "XXX";
+			Mem_Write <= '0';
+			Mem_to_Reg <= 'X';
+			Reg_Write <= '0';
+			
+	end case;
+end process;		
+
+
+end Unit_Control_arh;
+----------------------------------------------
+
+-------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;  
+
+entity Execution_Unit is
+Port( RD1: in std_logic_vector(15 downto 0);
+	RD2: in std_logic_vector(15 downto 0);	
+	ALUSrc: in std_logic;
+	Ext_Imm: in std_logic_vector(15 downto 0);
+	Func: in std_logic_vector(2 downto 0);	  
+	SA: in std_logic;
+	ALUOp: in std_logic_vector(2 downto 0);
+	ALURes: out std_logic_vector(15 downto 0);
+	Zero: out std_logic );  	 
+	
+end Execution_Unit;
+
+
+architecture Execution_Unit_arh of Execution_Unit is
+
+signal ALU_ctrl: std_logic_vector(2 downto 0) := "000";  
+signal Alu_select:std_logic_vector(15 downto 0) := X"0000";
+signal ALURes2:std_logic_vector(15 downto 0) := X"0000";
+signal Zero2: std_logic;
+
+begin
+							
+		process(RD2, ALUSrc, Ext_Imm)
+        begin
+            if( ALUSrc = '1') then 
+				Alu_select <= Ext_Imm;
+            else
+				Alu_select <= RD2;
+            end if;
+        end process;
+
+	process(ALUOp, Func)
+	begin
+		case (ALUOp) is
+			when "000"=>
+				case (Func) is
+					when "000"=> ALU_ctrl <= "000"; 	--- add
+					when "001"=> ALU_ctrl <= "001";  --- sub
+					when "010"=> ALU_ctrl <= "010";	--- sll
+					when "011"=> ALU_ctrl <= "011";	--- srl
+					when "100"=> ALU_ctrl <= "100";	--- and
+					when "101"=> ALU_ctrl <= "101";	--- or
+					when "110"=> ALU_ctrl <= "110";	--- xor	  
+					when "111" => ALU_ctrl <= "111"; -- nand
+					when others=> ALU_ctrl <= "000";
+				end case;
+				
+			when "001"=> ALU_ctrl <= "000";	---- addi
+			when "010"=> ALU_ctrl <= "001";	---- beq
+			when "101"=> ALU_ctrl <= "100";	---- andi
+			when "110"=> ALU_ctrl <= "101";	---- ori
+			when "111"=> ALU_ctrl <= "110";	---- jmp
+			when others=> ALU_ctrl <= "000";	
+		end case;
+	end process;
+	
+	
+	process(ALU_ctrl, RD1, Alu_select, SA)
+	begin
+		case(ALU_ctrl) is
+			when "000" => ALURes2 <= RD1 + Alu_select;   		
+			when "001" => ALURes2 <= RD1 - Alu_select;	
+			when "010" => 	
+					if ( SA = '0' ) then 
+						 ALURes2 <= RD1;
+					else 		   
+						ALURes2 <= "0" & RD1(15 downto 1);
+					end if;
+			
+			when "011" => 	if( SA = '0' ) then
+								ALURes2 <= RD1;
+							else	   
+								ALURes2 <= RD1(14 downto 0) & "0";	
+							end if;
+								
+			when "100" => ALURes2 <= RD1 and Alu_select;					
+			when "101" => ALURes2 <= RD1 or Alu_select;								
+			when "110" => ALURes2 <= RD1 xor Alu_select;	
+			when "111" => ALURes2 <= RD1 nand Alu_select;								   				
+			when others => ALURes2 <= "0000000000000000";	
+		end case;
+		
+		if(ALURes2 = "0000000000000000") then
+			Zero2 <= '1';
+		else
+			Zero2 <= '0';
+		end if;
+
+end process;
+
+Zero <= Zero2;	--- zero final
+ALURes <= ALURes2;	--- ALURes
+
+end Execution_Unit_arh;
+---------------------------------------------------------------------
+
+
+
+------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+	   
+entity Memorie_memory is
+	
+	port(
+ clk: in std_logic; 
+		Mem_Write: in std_logic;
+		ALURes : in std_logic_vector(15 downto 0);
+		Write_Data: in std_logic_vector(15 downto 0);							
+		Read_Data:out std_logic_vector(15 downto 0);
+			
+		ALURes2 :out std_logic_vector(15 downto 0)
+	);
+
+end Memorie_memory;
+
+
+
+
+architecture Memorie_memory_arh of Memorie_memory is
+  
+
+signal Address: std_logic_vector(3 downto 0);
+
+type ram_type is array (0 to 15) of std_logic_vector(15 downto 0);
+
+signal RAM:ram_type:= ( X"0004", X"0005", X"0006", X"0007", 
+	X"0008", X"0009", X"000A", X"000B", others => X"FFFF" );
+		
+
+
+begin
+
+	Address <= ALURes(3 downto 0);
+
+	process(clk) 			
+
+	begin
+	
+		if(rising_edge(clk)) then	
+			if Mem_Write='1' then
+		
+				RAM(conv_integer(Address))<= Write_Data;	
+			
+end if;	
+		
+end if;
+		Read_Data <= RAM(conv_integer(Address) );
+	
+	
+end process;
+
+	
+ALURes2 <= ALURes;		
+
+
+
+end Memorie_memory_arh;
+
+---------------------------------------------------------------
+
+
+
+
+
+
+-------------------------------------------------
+library IEEE;
+
+use IEEE.STD_LOGIC_1164.ALL;
+
+use IEEE.STD_LOGIC_ARITH.ALL;
+
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+
+
+
+entity test_env is
+    
+Port ( clk : in STD_LOGIC;
+           
+btn : in STD_LOGIC_VECTOR (4 downto 0);
+           
+sw : in STD_LOGIC_VECTOR (15 downto 0);
+           
+led : out STD_LOGIC_VECTOR (15 downto 0);
+           
+an : out STD_LOGIC_VECTOR (3 downto 0);
+           
+cat : out STD_LOGIC_VECTOR (6 downto 0) );
+
+
+end test_env;
+
+
+
+
+
+architecture Behavioral of test_env is
+
+----- Declararea componentelor pe care le folosim
+
+----- componenta pentru Instruction_Decode
+
+
+component Instruction_Decode is
+    		
+Port ( clk: in std_logic;	  
+			Write_Data: in std_logic_vector(15 downto 0);
+			Instruction: in std_logic_vector(15 downto 0);			
+			Ext_Op: in std_logic;  
+			Reg_Dst: in std_logic;	  
+			Reg_Write: in std_logic;		 
+			Ext_Imm : out std_logic_vector(15 downto 0);
+			Read_Data_1: out std_logic_vector(15 downto 0);
+			Read_Data_2: out std_logic_vector(15 downto 0);
+			SA : out std_logic;
+			Functionn : out std_logic_vector(2 downto 0) );		
+
+end component;	
+
+----- componenta pentru Instruction_Fetch
+
+
+component Instruction_Fetch is
+    
+ Port ( clk : in STD_LOGIC;
+           reset : in STD_LOGIC;
+           en : in STD_LOGIC;				
+		   jump_adress : in STD_LOGIC_VECTOR (15 downto 0);
+           branch_adress : in STD_LOGIC_VECTOR (15 downto 0);
+           jump : in STD_LOGIC;
+           pcsrc : in STD_LOGIC;    
+           instruction : out STD_LOGIC_VECTOR (15 downto 0);
+           next_instruction : out STD_LOGIC_VECTOR (15 downto 0));
+
+end component;			   
+
+----- componenta pentru Execution_Unit
+
+
+component Execution_Unit is
+   
+Port( RD1: in std_logic_vector(15 downto 0);
+	RD2: in std_logic_vector(15 downto 0);	
+	ALUSrc: in std_logic;
+	Ext_Imm: in std_logic_vector(15 downto 0);
+	Func: in std_logic_vector(2 downto 0);	  
+	SA: in std_logic;
+	ALUOp: in std_logic_vector(2 downto 0);
+	ALURes: out std_logic_vector(15 downto 0);
+	Zero: out std_logic );  
+
+end component;	
+
+----- componenta pentru Unit_Control
+
+
+component Unit_Control is
+	  
+Port ( Instr: in std_logic_vector(2 downto 0);
+			 
+Reg_Dst: out std_logic;
+			 
+Ext_Op: out std_logic;
+			 
+ALU_Src: out std_logic;
+			 
+Branch: out std_logic;
+			 
+bne:out std_logic;
+			 
+Jump: out std_logic;
+			 
+ALU_Op: out std_logic_vector(2 downto 0);
+			 
+Mem_Write: out std_logic;
+			
+Mem_to_Reg: out std_logic;
+			 
+Reg_Write: out std_logic);
+
+end component;	
+
+----- componenta pentru Memorie_memory
+
+
+component Memorie_memory is
+  
+port(
+ clk: in std_logic; 
+		Mem_Write: in std_logic;
+		ALURes : in std_logic_vector(15 downto 0);
+		Write_Data: in std_logic_vector(15 downto 0);							
+		Read_Data:out std_logic_vector(15 downto 0);
+			
+		ALURes2 :out std_logic_vector(15 downto 0)
+	);
+
+end component;
+
+
+	
+
+----- componenta pentru MPG
+
+
+component MPG is
+   
+Port ( en:out std_logic;
+		  
+input: in std_logic;
+		  
+clock:in std_logic);
+
+end component;
+
+----- componenta pentru SSD
+
+
+component SSD is	 
+	
+Port ( clk : in STD_LOGIC;
+           
+d0 : in STD_LOGIC_VECTOR (3 downto 0);
+           
+d1 : in STD_LOGIC_VECTOR (3 downto 0);
+           
+d2 : in STD_LOGIC_VECTOR (3 downto 0);
+           
+d3 : in STD_LOGIC_VECTOR (3 downto 0);
+           
+an : out STD_LOGIC_VECTOR (3 downto 0);
+          
+cat : out STD_LOGIC_VECTOR (6 downto 0));
+
+end component;
+
+
+
+----- Declararea semnalelor folosite
+
+
+
+
+----- Instruction_Decode signals
+
+signal write_data_semnal : STD_LOGIC_VECTOR (15 downto 0);
+	
+signal ext_op_semnal : STD_LOGIC;
+
+
+signal reg_dst_semnal : STD_LOGIC;
+
+signal reg_write_semnal : STD_LOGIC;
+
+signal ext_imm_semnal : STD_LOGIC_VECTOR (15 downto 0);
+
+signal read_data1_semnal : STD_LOGIC_VECTOR (15 downto 0);
+
+signal read_data2_semnal : STD_LOGIC_VECTOR (15 downto 0); 
+signal sa_semnal : STD_LOGIC;
+signal functionn_semnal : STD_LOGIC_VECTOR (2 downto 0);
+
+
+----- Instruction_Fetch signals
+
+signal en_semnal : STD_LOGIC;
+
+signal reset_semnal : STD_LOGIC;
+
+signal pcsrc_semnal : STD_LOGIC;
+
+signal branch_adress_semnal : STD_LOGIC_VECTOR(15 downto 0):=x"5678";
+
+signal jump_adress_semnal : STD_LOGIC_VECTOR(15 downto 0):=x"ABCD";
+
+signal instruction_semnal : STD_LOGIC_VECTOR (15 downto 0);
+
+signal next_instruction_semnal : STD_LOGIC_VECTOR (15 downto 0);
+
+
+
+
+
+
+----- Execution_Unit signals
+
+signal zero_semnal : STD_LOGIC;
+
+signal alu_res_semnal : STD_LOGIC_VECTOR (15 downto 0);   
+
+
+----- Unit_Control signals  
+signal alu_src_semnal : STD_LOGIC;
+
+signal branch_semnal : STD_LOGIC;
+
+signal bne_semnal : STD_LOGIC;	   
+signal jump_semnal : STD_LOGIC;
+
+signal alu_op_semnal : STD_LOGIC_VECTOR (2 downto 0);
+signal mem_write_semnal : STD_LOGIC;
+signal mem_to_reg_semnal : STD_LOGIC;
+----signal reg_write_semnal : STD_LOGIC;
+
+
+
+
+----- Memorie_memory signals
+
+signal mem_write_mpg_semnal : STD_LOGIC;
+
+signal mem_ctrl_semnal:STD_LOGIC;
+signal read_data_semnal : STD_LOGIC_VECTOR (15 downto 0);
+
+signal alu_res2_semnal : STD_LOGIC_VECTOR (15 downto 0);		  
+
+
+----- SSD signals
+signal afisare_semnal : STD_LOGIC_VECTOR (15 downto 0);
+
+
+
+
+
+begin 
+   	
+
+C1_M1: MPG port map(en => mem_write_mpg_semnal, input=>btn(2), clock=>clk); 
+		
+		
+
+
+C2_Inst_Decode: Instruction_Decode port map(clk=>clk, Write_Data=>write_data_semnal, 
+		Instruction=>instruction_semnal, Ext_Op=>ext_op_semnal, 
+		Reg_Dst=>reg_dst_semnal, Reg_Write=>reg_write_semnal, Ext_Imm=>ext_imm_semnal, 
+		Read_Data_1=>read_data1_semnal, Read_Data_2=>read_data2_semnal, SA=>sa_semnal, 
+		Functionn=>functionn_semnal );  
+
+	 
+		
+		
+C3_Inst_Fetch: Instruction_Fetch port map(clk=>clk, reset=>reset_semnal, en=>en_semnal, 
+		jump_adress=>jump_adress_semnal, branch_adress=>branch_adress_semnal, 
+		jump=>jump_semnal, pcsrc=>pcsrc_semnal,
+ instruction=>instruction_semnal, 
+		next_instruction=>next_instruction_semnal );
+	
+		
+
+C4_Exec_Unit: Execution_Unit port map (RD1 => read_data1_semnal, 
+		RD2 => read_data2_semnal, ALUSrc => alu_src_semnal, 
+		Ext_Imm => ext_imm_semnal, Func => functionn_semnal, 
+		SA => sa_semnal, ALUOp => alu_op_semnal, 
+		ALURes => alu_res_semnal, zero => zero_semnal);
+
+		
+		
+C5_Unit_Ctrl: Unit_Control port map(Instr=>instruction_semnal(15 downto 13), 
+		Reg_Dst=>reg_dst_semnal,Ext_Op=>ext_op_semnal, ALU_Src=>alu_src_semnal, 
+		Branch=>branch_semnal, bne => bne_semnal, Jump=>jump_semnal, 
+		ALU_Op=>alu_op_semnal, Mem_Write=>mem_write_semnal, 
+		Mem_to_Reg=>mem_to_reg_semnal, Reg_Write=>reg_write_semnal);
+        
+  
+		
+		
+C6_Memorie: Memorie_memory port map(clk=>clk, Mem_Write => mem_ctrl_semnal, 
+			ALURes=>alu_res_semnal, Write_Data=>read_data2_semnal, 
+			Read_Data=>read_data_semnal,
+ ALURes2=>alu_res2_semnal);
+      
+
+			
+
+
+reg_write_semnal <= reg_write_semnal or en_semnal;
+
+
+write_data_semnal <= read_data_semnal when (mem_to_reg_semnal = '1') 
+									else alu_res2_semnal;
+
+
+pcsrc_semnal <= (zero_semnal and branch_semnal) or ( (not zero_semnal) and bne_semnal);
+
+
+branch_adress_semnal <= next_instruction_semnal + ext_imm_semnal;
+
+jump_adress_semnal <= "000" & instruction_semnal(12 downto 0);
+
+
+mem_ctrl_semnal <=  mem_write_semnal and mem_write_mpg_semnal ;
+
+
+  
+
+
+----- MULTIPLEXOR       
+	process(instruction_semnal, next_instruction_semnal ,read_data1_semnal,
+		read_data2_semnal,write_data_semnal,read_data_semnal,
+		alu_res_semnal,ext_imm_semnal,sw(7 downto 5))
+    
+	begin
+
+		case sw(7 downto 5) is 
+
+           	when "000" => afisare_semnal <= ext_imm_semnal;
+             
+			when "001" => afisare_semnal <= alu_res_semnal;
+              
+			when "010" => afisare_semnal <= read_data2_semnal;
+             
+			when "011" => afisare_semnal <= write_data_semnal;
+              
+			when "100" => afisare_semnal <= read_data_semnal;
+            
+			when "101" => afisare_semnal <= read_data1_semnal;
+             
+			when "110" => afisare_semnal <= next_instruction_semnal;
+           
+			when "111" => afisare_semnal <= instruction_semnal;
+             
+			when others => afisare_semnal <= x"0000";
+           
+		end case;
+           
+	end process;
+
+      
+	        
+
+
+C7_SSD: SSD port map( clk=>clk, d0=>afisare_semnal(3 downto 0), d1=>afisare_semnal(7 downto 4), 
+	
+		d2=>afisare_semnal(11 downto 8), d3=>afisare_semnal(15 downto 12),
+		an=>an, cat=>cat );
+
+
+
+end Behavioral;
+											 
+
+
+
+
